@@ -5,6 +5,6 @@
   <rosparam file="$(find meca_500_moveit_config)/config/ros_controllers.yaml" command="load" />
 
   <!-- Load the controllers -->
-  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/meca_500" args="--namespace=/meca_500 arm_controller joint_state_controller --timeout 20" />
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="arm_controller joint_state_controller" />
 
 </launch>

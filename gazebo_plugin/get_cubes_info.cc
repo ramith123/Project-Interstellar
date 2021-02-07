@@ -23,11 +23,34 @@ namespace gazebo
 
     public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf)
     {
-        world = _world;
-        sdf = _sdf;
-        //this->getLocations();
+      world = _world;
+      sdf = _sdf;
+      //this->getLocations();
 
-        cubeLocations = "";
+      // Initialize ros, if it has not already bee initialized.
+      if (!ros::isInitialized())
+      {
+        int argc = 0;
+        char **argv = NULL;
+        ros::init(argc, argv, "gazebo_client", ros::init_options::NoSigintHandler);
+      }
+
+      // Create our ROS node. This acts in a similar manner to the Gazebo node
+      ros::NodeHandle rosNode;
+
+
+      // Create a named topic, and subscribe to it.
+      ros::Publisher sendCubeLocations = rosNode.advertise<std_msgs::String>("locations", 1000);
+      ros::Rate loop_rate(2);
+
+      /**
+       * A count of how many messages we have sent. This is used to create
+       * a unique string for each message.
+       */
+      int count = 0;
+      while (ros::ok())
+      {
+        cubeLocations = "\n";
         modelCount = this->world->ModelCount();
         for (int i=0; i<modelCount; i++){
           physics::ModelPtr m = this->world->ModelByIndex(i);
@@ -50,31 +73,7 @@ namespace gazebo
           cubeLocations = cubeLocations + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + "\n";
           }
         }
-        std::cout << cubeLocations;
 
-      // Initialize ros, if it has not already bee initialized.
-      if (!ros::isInitialized())
-      {
-        int argc = 0;
-        char **argv = NULL;
-        ros::init(argc, argv, "gazebo_client", ros::init_options::NoSigintHandler);
-      }
-
-      // Create our ROS node. This acts in a similar manner to the Gazebo node
-      ros::NodeHandle rosNode;
-
-
-      // Create a named topic, and subscribe to it.
-      ros::Publisher sendCubeLocations = rosNode.advertise<std_msgs::String>("locations", 1000);
-      ros::Rate loop_rate(10);
-
-      /**
-       * A count of how many messages we have sent. This is used to create
-       * a unique string for each message.
-       */
-      int count = 0;
-      while (ros::ok())
-      {
         std_msgs::String msg;
 
         std::stringstream ss;
@@ -88,7 +87,7 @@ namespace gazebo
         ++count;
       }
     }
-
+/*
     public: void getLocations(){
       cubeLocations = "";
       modelCount = this->world->ModelCount();
@@ -115,6 +114,7 @@ namespace gazebo
       }
       std::cout << cubeLocations;
     }
+  */
   };
   GZ_REGISTER_WORLD_PLUGIN(GetCubesInfo)
 }

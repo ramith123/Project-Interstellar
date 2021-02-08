@@ -27,3 +27,8 @@ joint_limits:
     max_velocity: 5.23599
     has_acceleration_limits: false
     max_acceleration: 0
+  meca_axis_6_joint:
+    has_velocity_limits: true
+    max_velocity: 8.726649999999999
+    has_acceleration_limits: false
+    max_acceleration: 0

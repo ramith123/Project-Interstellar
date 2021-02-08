@@ -15,7 +15,7 @@ hardware_interface:
     - meca_axis_4_joint
     - meca_axis_5_joint
     - meca_axis_6_joint
-  sim_control_mode: 1  # 0: position, 1: velocity
+  sim_control_mode: 1 # 0: position, 1: velocity
 # Publish all joint states
 # Creates the /joint_states topic necessary in ROS
 joint_state_controller:
@@ -32,6 +32,7 @@ controller_list:
       - meca_axis_3_joint
       - meca_axis_4_joint
       - meca_axis_5_joint
+      - meca_axis_6_joint
 arm_controller:
   type: position_controllers/JointTrajectoryController
   joints:
@@ -40,6 +41,7 @@ arm_controller:
     - meca_axis_3_joint
     - meca_axis_4_joint
     - meca_axis_5_joint
+    - meca_axis_6_joint
   gains:
     meca_axis_1_joint:
       p: 100

@@ -22,3 +22,23 @@ roslaunch meca_500_moveit_config demo_gazebo.launch
 ```
 
 you should be where I am at the time of the first commit.
+
+
+
+
+# For launching the Gazebo plugin
+
+On new terminal:
+```bash
+export GAZEBO_PLUGIN_PATH=${GAZEBO_PLUGIN_PATH}:<Path of gazebo_plugin folder>/build
+```
+
+Then, make sure and add plugin to the current Gazebo world file:
+```bash
+<plugin name="hello_world" filename="libhello_world.so"/>
+```
+
+Finally, start the gazebo world:
+```bash
+$ gzserver <Location of Gazebo world> --verbose
+```

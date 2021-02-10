@@ -158,4 +158,20 @@
     <axis xyz="1 0 0" />
     <limit effort="10.0" velocity="8.72665" lower="-3.14159" upper="3.14159" />
   </joint>
+
+
+  <link name="meca_axis_flange" />
+  <joint name="meca_axis_joint_7-flange" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="meca_axis_6_link" />
+    <child link="meca_axis_flange" />
+  </joint>
+
+  <!-- ROS-Industrial 'tool0' frame: all-zeros tool frame -->
+  <link name="meca_axis_tool0" />
+  <joint name="meca_axis_link_7-tool0" type="fixed">
+    <origin xyz="0 0 0" rpy="${pi} ${-pi/2.0} 0" />
+    <parent link="meca_axis_flange" />
+    <child link="meca_axis_tool0" />
+  </joint>
 </robot>

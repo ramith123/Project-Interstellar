@@ -1,0 +1,15 @@
+controller_list:
+  - name: fake_meca_arm_controller
+    joints:
+      - meca_axis_1_joint
+      - meca_axis_2_joint
+      - meca_axis_3_joint
+      - meca_axis_4_joint
+      - meca_axis_5_joint
+      - meca_axis_6_joint
+  - name: fake_hand_controller
+    joints:
+      - finger_joint
+initial:  # Define initial robot poses.
+  - group: meca_arm
+    pose: straight up

@@ -8,4 +8,4 @@ moveit_setup_assistant_config:
   CONFIG:
     author_name: group_interstellar
     author_email: interstellar_group@gmail.com
-    generated_timestamp: 1613014910
+    generated_timestamp: 1613068768

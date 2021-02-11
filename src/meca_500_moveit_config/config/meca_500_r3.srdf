@@ -18,8 +18,6 @@
         <joint name="meca_axis_6_joint" />
     </group>
     <group name="hand">
-        <link name="meca_axis_tool0" />
-        <link name="robotiq_85_base_link" />
         <link name="left_outer_knuckle" />
         <link name="left_outer_finger" />
         <link name="left_inner_knuckle" />
@@ -39,7 +37,7 @@
         <joint name="meca_axis_6_joint" value="0" />
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="hand" parent_link="meca_axis_tool0" group="hand" />
+    <end_effector name="hane" parent_link="meca_axis_tool0" group="hand" />
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
     <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="meca_base_link" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->

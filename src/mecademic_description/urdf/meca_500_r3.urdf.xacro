@@ -273,6 +273,10 @@
                 <mesh filename="package://mecademic_description/meshes/finger.dae" />
             </geometry>
         </visual>
+        <inertial>
+            <mass value="0.1" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
     </link>
     <link name="meca_rightfinger">
         <visual>
@@ -280,7 +284,12 @@
             <geometry>
                 <mesh filename="package://mecademic_description/meshes/finger.dae" />
             </geometry>
+
         </visual>
+        <inertial>
+            <mass value="0.1" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
     </link>
     <joint name="meca_finger_joint1" type="prismatic">
         <parent link="meca_hand" />

@@ -6,6 +6,6 @@ moveit_setup_assistant_config:
   SRDF:
     relative_path: config/meca_500_r3.srdf
   CONFIG:
-    author_name: group_interstellar
-    author_email: interstellar_group@gmail.com
-    generated_timestamp: 1613068768
+    author_name: interstellar
+    author_email: interstellar@interstellar.com
+    generated_timestamp: 1613106054

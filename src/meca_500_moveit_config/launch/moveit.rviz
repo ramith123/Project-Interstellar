@@ -72,26 +72,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          left_inner_finger:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          left_inner_knuckle:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          left_outer_finger:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          left_outer_knuckle:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
           meca_axis_1_link:
             Alpha: 1
             Show Axes: false
@@ -122,40 +102,22 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          meca_axis_flange:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          meca_axis_tool0:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           meca_base_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_inner_finger:
+          meca_hand:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_inner_knuckle:
+          meca_leftfinger:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_outer_finger:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          right_outer_knuckle:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robotiq_85_base_link:
+          meca_rightfinger:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -209,26 +171,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          left_inner_finger:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          left_inner_knuckle:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          left_outer_finger:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          left_outer_knuckle:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
           meca_axis_1_link:
             Alpha: 1
             Show Axes: false
@@ -259,40 +201,22 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          meca_axis_flange:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          meca_axis_tool0:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           meca_base_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_inner_finger:
+          meca_hand:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_inner_knuckle:
+          meca_leftfinger:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_outer_finger:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          right_outer_knuckle:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robotiq_85_base_link:
+          meca_rightfinger:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -310,7 +234,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: world
+    Fixed Frame: meca_base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -322,7 +246,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 0.8673967123031616
+      Distance: 1.7942882776260376
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -337,10 +261,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9597965478897095
-      Target Frame: world
+      Pitch: 0.40979674458503723
+      Target Frame: meca_base_link
       Value: XYOrbit (rviz)
-      Yaw: 4.784943103790283
+      Yaw: 5.569949626922607
     Saved: ~
 Window Geometry:
   Displays:

@@ -5,8 +5,8 @@
   <description>
      An automatically generated package with all the configuration and launch files for using the meca_500_r3 with the MoveIt! Motion Planning Framework
   </description>
-  <author email="interstellar_group@gmail.com">group_interstellar</author>
-  <maintainer email="interstellar_group@gmail.com">group_interstellar</maintainer>
+  <author email="interstellar@interstellar.com">interstellar</author>
+  <maintainer email="interstellar@interstellar.com">interstellar</maintainer>
 
   <license>BSD</license>
 

@@ -9,7 +9,7 @@ controller_list:
       - meca_axis_6_joint
   - name: fake_hand_controller
     joints:
-      - finger_joint
+      - meca_finger_joint1
 initial:  # Define initial robot poses.
   - group: meca_arm
-    pose: straight up
+    pose: home pose

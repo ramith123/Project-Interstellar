@@ -6,6 +6,6 @@ moveit_setup_assistant_config:
   SRDF:
     relative_path: config/meca_500_r3.srdf
   CONFIG:
-    author_name: ramk
-    author_email: ramithchandula@gmail.com
-    generated_timestamp: 1612815936
+    author_name: interstellar
+    author_email: interstellar@interstellar.com
+    generated_timestamp: 1613106054

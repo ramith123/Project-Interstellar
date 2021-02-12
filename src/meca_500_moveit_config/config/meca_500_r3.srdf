@@ -9,14 +9,7 @@
     <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
-    <group name="arm">
-        <link name="meca_base_link" />
-        <link name="meca_axis_1_link" />
-        <link name="meca_axis_2_link" />
-        <link name="meca_axis_3_link" />
-        <link name="meca_axis_4_link" />
-        <link name="meca_axis_5_link" />
-        <link name="meca_axis_6_link" />
+    <group name="meca_arm">
         <joint name="meca_axis_1_joint" />
         <joint name="meca_axis_2_joint" />
         <joint name="meca_axis_3_joint" />
@@ -24,16 +17,24 @@
         <joint name="meca_axis_5_joint" />
         <joint name="meca_axis_6_joint" />
     </group>
+    <group name="hand">
+        <link name="meca_hand" />
+        <link name="meca_leftfinger" />
+        <link name="meca_rightfinger" />
+    </group>
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
-    <group_state name="hoome" group="arm">
+    <group_state name="home pose" group="meca_arm">
         <joint name="meca_axis_1_joint" value="0" />
         <joint name="meca_axis_2_joint" value="0" />
         <joint name="meca_axis_3_joint" value="0" />
         <joint name="meca_axis_4_joint" value="0" />
         <joint name="meca_axis_5_joint" value="0" />
+        <joint name="meca_axis_6_joint" value="0" />
     </group_state>
-    <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->
-    <passive_joint name="meca_axis_6_joint" />
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <end_effector name="hand" parent_link="meca_axis_6_link" group="hand" />
+    <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
+    <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="meca_base_link" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="meca_axis_1_link" link2="meca_axis_2_link" reason="Adjacent" />
     <disable_collisions link1="meca_axis_1_link" link2="meca_axis_3_link" reason="Never" />
@@ -44,7 +45,20 @@
     <disable_collisions link1="meca_axis_3_link" link2="meca_axis_5_link" reason="Never" />
     <disable_collisions link1="meca_axis_3_link" link2="meca_axis_6_link" reason="Never" />
     <disable_collisions link1="meca_axis_3_link" link2="meca_base_link" reason="Never" />
+    <disable_collisions link1="meca_axis_3_link" link2="meca_leftfinger" reason="Never" />
+    <disable_collisions link1="meca_axis_3_link" link2="meca_rightfinger" reason="Never" />
     <disable_collisions link1="meca_axis_4_link" link2="meca_axis_5_link" reason="Adjacent" />
     <disable_collisions link1="meca_axis_4_link" link2="meca_axis_6_link" reason="Never" />
+    <disable_collisions link1="meca_axis_4_link" link2="meca_leftfinger" reason="Never" />
+    <disable_collisions link1="meca_axis_4_link" link2="meca_rightfinger" reason="Never" />
     <disable_collisions link1="meca_axis_5_link" link2="meca_axis_6_link" reason="Adjacent" />
+    <disable_collisions link1="meca_axis_5_link" link2="meca_hand" reason="Default" />
+    <disable_collisions link1="meca_axis_5_link" link2="meca_leftfinger" reason="Never" />
+    <disable_collisions link1="meca_axis_5_link" link2="meca_rightfinger" reason="Never" />
+    <disable_collisions link1="meca_axis_6_link" link2="meca_hand" reason="Adjacent" />
+    <disable_collisions link1="meca_axis_6_link" link2="meca_leftfinger" reason="Never" />
+    <disable_collisions link1="meca_axis_6_link" link2="meca_rightfinger" reason="Never" />
+    <disable_collisions link1="meca_hand" link2="meca_leftfinger" reason="Adjacent" />
+    <disable_collisions link1="meca_hand" link2="meca_rightfinger" reason="Adjacent" />
+    <disable_collisions link1="meca_leftfinger" link2="meca_rightfinger" reason="Default" />
 </robot>

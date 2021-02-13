@@ -1,11 +1,15 @@
 controller_list:
-  - name: fake_arm_controller
+  - name: fake_meca_arm_controller
     joints:
       - meca_axis_1_joint
       - meca_axis_2_joint
       - meca_axis_3_joint
       - meca_axis_4_joint
       - meca_axis_5_joint
+      - meca_axis_6_joint
+  - name: fake_hand_controller
+    joints:
+      - meca_finger_joint1
 initial:  # Define initial robot poses.
-  - group: arm
-    pose: hoome
+  - group: meca_arm
+    pose: home pose

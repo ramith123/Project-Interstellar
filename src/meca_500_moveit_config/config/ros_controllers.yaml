@@ -24,10 +24,10 @@ joint_state_controller:
   publish_rate: 50
 controller_list:
   - name: hand_controller
-      action_ns: follow_joint_trajectory
-      type: FollowJointTrajectory
-      joints:
-        - meca_finger_joint1
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    joints:
+      - meca_finger_joint1
 
   - name: arm_controller
     action_ns: follow_joint_trajectory
@@ -40,7 +40,6 @@ controller_list:
       - meca_axis_4_joint
       - meca_axis_5_joint
       - meca_axis_6_joint
-  
 
 arm_controller:
   type: position_controllers/JointTrajectoryController

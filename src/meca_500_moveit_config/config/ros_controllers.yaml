@@ -82,7 +82,7 @@ arm_controller:
       i: 1
       i_clamp: 1
 hand_controller:
-  type: effort_controllers/JointEffortController
+  type: position_controllers/JointTrajectoryController
   joints:
     - meca_finger_joint1
   gains:

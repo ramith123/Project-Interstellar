@@ -85,21 +85,92 @@ class MoveGroupPythonIntefaceTutorial(object):
 
     def go_to_pose_goal(self):
 
+        # home = [0.202498, 1.58212e-07,
+        #         0.308, -7.20924e-07, 2.22244e-07, 4.16346e-07]
+
         pose_goal = [0.0203439, 0.189837, 0.307987, -
                      5.01149e-05, 1.45655e-05, 0.692353, 0.721559]
 
         # move_group.set_pose_target(pose_goal)
 
         self.move_group.set_pose_target(pose_goal, self.eef_link)
+        plan1 = self.move_group.plan()
 
-        # Now, we call the planner to compute the plan and execute it.
-        plan = self.move_group.go(wait=True)
-        # Calling `stop()` ensures that there is no residual movement
-        self.move_group.stop()
-        # It is always good to clear your targets after planning with poses.
-        # Note: there is no equivalent function for clear_joint_value_targets()
+        # self.move_group.set_pose_target(home, self.eef_link)
+        # plan2 = self.move_group.plan()
+
+        self.move_group.execute(plan1, wait=True)
+        # self.move_group.execute(plan2, wait=True)
+
         self.move_group.clear_pose_targets()
+        self.move_group.stop()
+
+    def plan_cartesian_path(self, scale=1):
+
+        waypoints = []
+
+        wpose = self.move_group.get_current_pose().pose
+        wpose.position.x = 0.0203439
+        wpose.position.y = 0.189837
+        wpose.position.z = 0.307987
+
+        wpose.orientation.x = -5.01149e-05
+        wpose.orientation.y = 1.45655e-05
+        wpose.orientation.z = 0.692353
+        wpose.orientation.w = 0.721559
+
+        waypoints.append(copy.deepcopy(wpose))
+
+        # wpose.position.x += scale * 0.1  # Second move forward/backwards in (x)
+        # waypoints.append(copy.deepcopy(wpose))
+
+        # wpose.position.y -= scale * 0.1  # Third move sideways (y)
+        # waypoints.append(copy.deepcopy(wpose))
+
+        # We want the Cartesian path to be interpolated at a resolution of 1 cm
+        # which is why we will specify 0.01 as the eef_step in Cartesian
+        # translation.  We will disable the jump threshold by setting it to 0.0,
+        # ignoring the check for infeasible jumps in joint space, which is sufficient
+        # for this tutorial.
+        (plan, fraction) = self.move_group.compute_cartesian_path(
+            waypoints,   # waypoints to follow
+            0.01,        # eef_step
+            0.0)         # jump_threshold
+
+        # Note: We are just planning, not asking move_group to actually move the robot yet:
+        return plan, fraction
+
+    def display_trajectory(self, plan):
+        display_trajectory_publisher = self.display_trajectory_publisher
+
+        # BEGIN_SUB_TUTORIAL display_trajectory
+        ##
+        # Displaying a Trajectory
+        # ^^^^^^^^^^^^^^^^^^^^^^^
+        # You can ask RViz to visualize a plan (aka trajectory) for you. But the
+        # group.plan() method does this automatically so this is not that useful
+        # here (it just displays the same trajectory again):
+        ##
+        # A `DisplayTrajectory`_ msg has two primary fields, trajectory_start and trajectory.
+        # We populate the trajectory_start with our current robot state to copy over
+        # any AttachedCollisionObjects and add our plan to the trajectory.
+        display_trajectory = moveit_msgs.msg.DisplayTrajectory()
+        display_trajectory.trajectory_start = self.robot.get_current_state()
+        display_trajectory.trajectory.append(plan)
+        # Publish
+        display_trajectory_publisher.publish(display_trajectory)
+
+    def execute_plan(self, plan):
+        # Use execute if you would like the robot to follow
+        # the plan that has already been computed:
+        self.move_group.execute(plan, wait=True)
+
+        # **Note:** The robot's current joint state must be within some tolerance of the
+        # first waypoint in the `RobotTrajectory`_ or ``execute()`` will fail
 
 
 tutorial = MoveGroupPythonIntefaceTutorial()
-tutorial.go_to_pose_goal()
+# tutorial.go_to_pose_goal()
+plan, fraction = tutorial.plan_cartesian_path()
+tutorial.display_trajectory(plan)
+tutorial.execute_plan(plan)

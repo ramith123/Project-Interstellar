@@ -15,15 +15,32 @@ hardware_interface:
     - meca_axis_4_joint
     - meca_axis_5_joint
     - meca_axis_6_joint
-    - meca_finger_joint1
-  sim_control_mode: 1  # 0: position, 1: velocity
+
+  sim_control_mode: 1 # 0: position, 1: velocity
 # Publish all joint states
 # Creates the /joint_states topic necessary in ROS
 joint_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 50
 controller_list:
-  []
+  - name: hand_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    joints:
+      - meca_finger_joint1
+
+  - name: arm_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - meca_axis_1_joint
+      - meca_axis_2_joint
+      - meca_axis_3_joint
+      - meca_axis_4_joint
+      - meca_axis_5_joint
+      - meca_axis_6_joint
+
 arm_controller:
   type: position_controllers/JointTrajectoryController
   joints:
@@ -65,9 +82,10 @@ arm_controller:
       i: 1
       i_clamp: 1
 hand_controller:
-  type: effort_controllers/JointEffortController
+  type: position_controllers/JointTrajectoryController
   joints:
-    meca_finger_joint1
+    - meca_finger_joint1
+
   gains:
     meca_finger_joint1:
       p: 100

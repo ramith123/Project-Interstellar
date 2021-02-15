@@ -389,6 +389,10 @@
     </transmission>
     <gazebo>
         <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+
+            <robotNamespace>/</robotNamespace>
+        </plugin>
+        <plugin name="gazebo_ros_mimic" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
             <robotNamespace>/</robotNamespace>
         </plugin>
     </gazebo>

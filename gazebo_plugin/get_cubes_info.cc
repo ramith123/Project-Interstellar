@@ -34,13 +34,6 @@ namespace gazebo
         ros::init(argc, argv, "gazebo_client", ros::init_options::NoSigintHandler);
       }
 
-      // Create our ROS node. This acts in a similar manner to the Gazebo node
-      ros::NodeHandle rosNode;
-
-
-      // Create a named topic, and subscribe to it.
-      ros::Publisher sendCubeLocations = rosNode.advertise<std_msgs::String>("locations", 1000);
-      ros::Rate loop_rate(1);
       cubeLocations = "\n";
       modelCount = this->world->ModelCount();
       for (int i=0; i<modelCount; i++){
@@ -64,17 +57,28 @@ namespace gazebo
         cubeLocations = cubeLocations + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + "\n";
         }
       }
+      //std::thread t1(runTopic, cubeLocations);
+    }
 
+    public: static void runTopic(std::string poses){
+      // Create our ROS node. This acts in a similar manner to the Gazebo node
+      ros::NodeHandle rosNode;
+
+      // Create a named topic, and subscribe to it.
+      ros::Publisher sendCubeLocations = rosNode.advertise<std_msgs::String>("locations", 1000);
+
+      // Set the rate at which the while loop runs.
+      ros::Rate loop_rate(1);
       while (ros::ok()){
-        std_msgs::String msg;
+      std_msgs::String msg;
 
-        std::stringstream ss;
-        ss << this->cubeLocations;
-        msg.data = ss.str();
+      std::stringstream ss;
+      ss << poses;
+      msg.data = ss.str();
 
-        ROS_INFO("%s", msg.data.c_str());
-        sendCubeLocations.publish(msg);
-        loop_rate.sleep();
+      ROS_INFO("%s", msg.data.c_str());
+      sendCubeLocations.publish(msg);
+      loop_rate.sleep();
       }
     }
   };

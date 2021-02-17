@@ -15,5 +15,6 @@
         </geometry>
       </visual>
     </link>
+  <plugin name='get_cubes_info' filename='libget_cubes_info.so'/>	
   </model>
 </sdf>

@@ -16,50 +16,61 @@ namespace gazebo
 {
   class GetCubesInfo : public ModelPlugin
   {
+
+    ros::Publisher sendCubeLocations;
     // Pointer to the model
-    private: physics::ModelPtr model;
+  private:
+    physics::ModelPtr model;
 
     // Pointer to the update event connection
-    private: event::ConnectionPtr updateConnection;
+  private:
+    event::ConnectionPtr updateConnection;
 
+  public:
+    void Load(physics::ModelPtr _parent, sdf::ElementPtr /*_sdf*/)
 
-    public: void Load(physics::ModelPtr _parent, sdf::ElementPtr /*_sdf*/)
     {
+      int argc = 0;
+      char **argv = NULL;
+      ros::init(argc, argv, "gazebo_client", ros::init_options::NoSigintHandler);
+      ros::NodeHandle rosNode;
+      sendCubeLocations = rosNode.advertise<std_msgs::String>("locations", 1000);
+      std::cout << "Loaded";
       // Store the pointer to the model
       this->model = _parent;
 
       // Listen to the update event. This event is broadcast every
       // simulation iteration.
       this->updateConnection = event::Events::ConnectBeforePhysicsUpdate(std::bind(&GetCubesInfo::OnUpdate, this));
-      this->publishToTopic();
+      // this->publishToTopic();
     }
 
     // Called by the world update start event
-    public: void OnUpdate()
+  public:
+    void OnUpdate()
+
     {
+      std::cout << "Update";
       this->publishToTopic();
     }
 
-    public: void publishToTopic(){
-      int argc = 0;
-      char **argv = NULL;
-      ros::init(argc, argv, "gazebo_client", ros::init_options::NoSigintHandler);
-      ros::NodeHandle rosNode;
-      ros::Publisher sendCubeLocations = rosNode.advertise<std_msgs::String>("locations", 1000);
+  public:
+    void publishToTopic()
+    {
 
       // Get the pose of the model, and store it in a Vector.
       ignition::math::Vector3<double> v1(0, 0, 0);
       ignition::math::Pose3d pose;
-  
+
       pose = this->model->WorldPose();
       v1 = pose.Pos();
       double x = v1.X(); // x coordinate
       double y = v1.Y(); // y coordinate
-      double z = v1.Z(); // z coordinate
+      double z = v1.Z(); // z coordinatesendCubeLocations
 
       std::string cubeLocations = this->model->GetScopedName() + "," + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + "\n";
       std_msgs::String msg;
-
+      // std::cout << cubeLocations;
       std::stringstream ss;
       ss << cubeLocations;
       msg.data = ss.str();

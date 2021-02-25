@@ -225,12 +225,12 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0 1.57079632679 1.57079632679" xyz="0 0 0.04" />
+            <origin rpy="0 1.57079632679 1.57079632679" xyz="0 0 0.03" />
             <geometry>
-                <cylinder length="0.1" radius="0.07" />
+                <box size="0.07 0.04 0.2" />
             </geometry>
         </collision>
-        <collision>
+        <!-- <collision>
             <origin rpy="0 0 0" xyz="0 -0.05 0.04" />
             <geometry>
                 <sphere radius="0.07" />
@@ -241,8 +241,8 @@
             <geometry>
                 <sphere radius="0.07" />
             </geometry>
-        </collision>
-        <collision>
+        </collision> -->
+        <!-- <collision>
             <origin rpy="0 1.57079632679 1.57079632679" xyz="0 0 0.1" />
             <geometry>
                 <cylinder length="0.1" radius="0.05" />
@@ -259,7 +259,7 @@
             <geometry>
                 <sphere radius="0.05" />
             </geometry>
-        </collision>
+        </collision> -->
 
         <inertial>
             <mass value="0.1" />

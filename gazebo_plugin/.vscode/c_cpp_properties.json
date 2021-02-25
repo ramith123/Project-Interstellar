@@ -1,0 +1,18 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/opt/ros/melodic/include/**",
+        "/opt/ros/melodic/share/fetch_gazebo/include/**",
+        "/home/ram/Projects/Project-Interstellar/src/roboticsgroup_upatras_gazebo_plugins-master/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}

@@ -225,12 +225,12 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0 1.57079632679 1.57079632679" xyz="0 0 0.04" />
+            <origin rpy="0 1.57079632679 1.57079632679" xyz="0 0 0.03" />
             <geometry>
-                <cylinder length="0.1" radius="0.07" />
+                <box size="0.07 0.04 0.2" />
             </geometry>
         </collision>
-        <collision>
+        <!-- <collision>
             <origin rpy="0 0 0" xyz="0 -0.05 0.04" />
             <geometry>
                 <sphere radius="0.07" />
@@ -241,8 +241,8 @@
             <geometry>
                 <sphere radius="0.07" />
             </geometry>
-        </collision>
-        <collision>
+        </collision> -->
+        <!-- <collision>
             <origin rpy="0 1.57079632679 1.57079632679" xyz="0 0 0.1" />
             <geometry>
                 <cylinder length="0.1" radius="0.05" />
@@ -259,7 +259,7 @@
             <geometry>
                 <sphere radius="0.05" />
             </geometry>
-        </collision>
+        </collision> -->
 
         <inertial>
             <mass value="0.1" />
@@ -277,6 +277,12 @@
             <mass value="0.1" />
             <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <mesh filename="package://mecademic_description/meshes/finger.dae" />
+            </geometry>
+        </collision>
     </link>
     <link name="meca_rightfinger">
         <visual>
@@ -290,6 +296,12 @@
             <mass value="0.1" />
             <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
+        <collision>
+            <origin rpy="0 0 3.14159265359" xyz="0 0 0" />
+            <geometry>
+                <mesh filename="package://mecademic_description/meshes/finger.dae" />
+            </geometry>
+        </collision>
     </link>
     <joint name="meca_finger_joint1" type="prismatic">
         <parent link="meca_hand" />

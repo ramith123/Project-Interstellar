@@ -1,6 +1,46 @@
-# For the Demo Page, instructions on launching gazebo and Rviz
+- [Introductions](#introductions)
+  - [What is this?](#what-is-this)
+  - [Who are we?](#who-are-we)
+- [The Project](#the-project)
+  - [Technologies used](#technologies-used)
+  - [Purpose](#purpose)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Authors and acknowledgment](#authors-and-acknowledgment)
 
-So to get started run below where the src folder is (parent folder of src) in this it should be `Project-Intersteller`
+# Introductions 
+
+## What is this?
+Pick and Place Project with the Mecademic Meca500 Six-Axis Industrial Robot Arm (simulation) [More info...](#the-project)
+## Who are we?
+We are a group of final year [University of West Indies](https://sta.uwi.edu/) students, all doing an undergraduate degree in Computer Science expecting graduate this year (2021).
+
+# The Project
+
+## Technologies used
+This project mainly uses the following:
+
+- [ROS Melodic](http://wiki.ros.org/melodic/Installation)
+- [Meca500 ROS Package](https://github.com/Mecademic/ROS)
+- Gazebo for simulation
+- MoveIt! for moving it
+
+## Purpose
+more.....
+# Getting Started
+
+## Prerequisites
+
+## Installation
+
+# Usage
+# Authors and acknowledgment
+
+
+
+<!-- So to get started run below where the src folder is (parent folder of src) in this it should be `Project-Intersteller`
 
 ```bash
 catkin_make
@@ -41,4 +81,4 @@ Then, make sure and add plugin to the current Gazebo world file:
 Finally, start the gazebo world:
 ```bash
 $ gzserver <Location of Gazebo world> --verbose
-```
+``` -->

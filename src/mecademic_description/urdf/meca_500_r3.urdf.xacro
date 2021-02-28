@@ -308,14 +308,14 @@
         <child link="meca_leftfinger" />
         <origin rpy="0 0 0" xyz="0 0 0.0584" />
         <axis xyz="0 1 0" />
-        <limit effort="20" lower="0.0" upper="0.04" velocity="0.2" />
+        <limit effort="9999" lower="-0.001" upper="0.06" velocity="0.1" />
     </joint>
     <joint name="meca_finger_joint2" type="prismatic">
         <parent link="meca_hand" />
         <child link="meca_rightfinger" />
         <origin rpy="0 0 0" xyz="0 0 0.0584" />
         <axis xyz="0 -1 0" />
-        <limit effort="20" lower="0.0" upper="0.04" velocity="0.2" />
+        <limit effort="9999" lower="-0.001" upper="0.06" velocity="0.1" />
         <mimic joint="meca_finger_joint1" />
     </joint>
 
@@ -382,20 +382,20 @@
     <transmission name="trans_meca_finger_joint1">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="meca_finger_joint1">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
         <actuator name="meca_finger_joint1_motor">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
     <transmission name="trans_meca_finger_joint2">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="meca_finger_joint2">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
         <actuator name="meca_finger_joint2_motor">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
@@ -411,4 +411,47 @@
             <robotNamespace>/</robotNamespace>
         </plugin>
     </gazebo>
+    <gazebo reference="meca_rightfinger">
+        <mu1>100</mu1>
+        <mu2>100</mu2>
+        <kp>100000</kp>
+        <!-- <fdir1>0 0 0</fdir1> -->
+        <collision name="meca__leftfinger_collision">
+            <surface>
+                <friction>
+                    <torsional>
+                        <coefficient>100</coefficient>
+                        <use_patch_radius>true</use_patch_radius>
+                        <patch_radius>0.1</patch_radius>
+                        <surface_radius>0.1</surface_radius>
+                    </torsional>
+                </friction>
+            </surface>
+        </collision>
+    </gazebo>
+    <gazebo reference="meca_leftfinger">
+        <mu1>100</mu1>
+        <mu2>100</mu2>
+        <kp>100000</kp>
+        <!-- <fdir1>0 0 0</fdir1> -->
+        <collision name="meca__rightfinger_collision">
+            <surface>
+                <friction>
+                    <torsional>
+                        <coefficient>100</coefficient>
+                        <use_patch_radius>true</use_patch_radius>
+                        <patch_radius>0.1</patch_radius>
+                        <surface_radius>0.1</surface_radius>
+                    </torsional>
+                </friction>
+            </surface>
+        </collision>
+    </gazebo>
+    <!-- <gazebo reference="meca_finger_joint1">
+        <implicitSpringDamper>1</implicitSpringDamper>
+    </gazebo>
+    <gazebo reference="meca_finger_joint2">
+        <implicitSpringDamper>1</implicitSpringDamper>
+    </gazebo> -->
+
 </robot>

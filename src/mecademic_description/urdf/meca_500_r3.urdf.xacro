@@ -275,8 +275,9 @@
         </visual>
         <inertial>
             <mass value="0.1" />
-            <origin xyz="0 0.0145644 0.0227941" rpy="0 0 0" />
+            <!-- <origin xyz="0 0.0145644 0.0227941" rpy="0 0 0" /> -->
             <inertia ixx="3.01220925051e-05" ixy="0.0" ixz="0.0" iyy="2.95873808038e-05" iyz="0.0" izz="6.95125211657e-06" />
+            <!-- <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" /> -->
         </inertial>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0" />
@@ -295,8 +296,9 @@
         </visual>
         <inertial>
             <mass value="0.1" />
-            <origin xyz="0 0.0145644 0.0227941" rpy="0 0 ${pi}" />
+            <!-- <origin xyz="0 0.0145644 0.0227941" rpy="0 0 ${pi}" /> -->
             <inertia ixx="3.01220925051e-05" ixy="0.0" ixz="0.0" iyy="2.95873808038e-05" iyz="0.0" izz="6.95125211657e-06" />
+            <!-- <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" /> -->
         </inertial>
         <collision>
             <origin rpy="0 0 3.14159265359" xyz="0 0 0" />
@@ -310,14 +312,14 @@
         <child link="meca_leftfinger" />
         <origin rpy="0 0 0" xyz="0 0 0.0584" />
         <axis xyz="0 1 0" />
-        <limit effort="1000" lower="-0.001" upper="0.04" velocity="0.3" />
+        <limit effort="99999" lower="-0.001" upper="0.04" velocity="0.3" />
     </joint>
     <joint name="meca_finger_joint2" type="prismatic">
         <parent link="meca_hand" />
         <child link="meca_rightfinger" />
         <origin rpy="0 0 0" xyz="0 0 0.0584" />
         <axis xyz="0 -1 0" />
-        <limit effort="1000" lower="-0.001" upper="0.04" velocity="0.3" />
+        <limit effort="99999" lower="-0.001" upper="0.04" velocity="0.3" />
         <mimic joint="meca_finger_joint1" />
     </joint>
 

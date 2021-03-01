@@ -66,7 +66,9 @@ namespace gazebo
       v1 = pose.Pos();
       double x = v1.X(); // x coordinate
       double y = v1.Y(); // y coordinate
-      double z = v1.Z(); // z coordinatesendCubeLocations
+
+      double z = v1.Z(); // z coordinate
+
 
       std::string cubeLocations = this->model->GetScopedName() + "," + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + "\n";
       std_msgs::String msg;

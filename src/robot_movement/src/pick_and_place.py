@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import sys
 import copy
 import rospy
@@ -17,9 +16,9 @@ def simple_pick_place():
 
     # Instantiate a MoveGroupCommander object.  This object is an interface
     # to one group of joints.  In this case the group refers to the joints of
-    # robot1. This interface can be used to plan and execute motions on robot1.
+    # the meca_arm.
     robot1_group = moveit_commander.MoveGroupCommander("meca_arm")
-    # MoveGroup Commander Object for robot2.
+    # MoveGroup Commander Object for the mecademic hand.
     robot2_group = moveit_commander.MoveGroupCommander("hand")
 
     scene = moveit_commander.PlanningSceneInterface()
@@ -81,7 +80,7 @@ def simple_pick_place():
     # We can get the joint values from the group and adjust some of the values:
     joint_goal = robot2_group.get_current_joint_values()
     print(joint_goal)
-    joint_goal[0] = 0.00
+    joint_goal[0] = 0.040
 
     # The go command can be called with joint values, poses, or without any
     # parameters if you have already set the pose or joint target for the group

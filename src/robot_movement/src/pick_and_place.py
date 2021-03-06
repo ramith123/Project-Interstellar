@@ -80,6 +80,7 @@ def simple_pick_place():
     # We can get the joint values from the group and adjust some of the values:
     joint_goal = robot2_group.get_current_joint_values()
     print(joint_goal)
+<<<<<<< HEAD
     joint_goal[0] = 0.040
 
     # The go command can be called with joint values, poses, or without any
@@ -95,6 +96,9 @@ def simple_pick_place():
     joint_goal = robot2_group.get_current_joint_values()
     print(joint_goal)
     joint_goal[0] = 0.040
+=======
+    joint_goal[0] = 0.04
+>>>>>>> main
 
     # The go command can be called with joint values, poses, or without any
     # parameters if you have already set the pose or joint target for the group

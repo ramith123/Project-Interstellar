@@ -14,6 +14,5 @@
 	<name>box1</name>
         <pose>0.3 0.5 0.9 0 0 0</pose>
     </include>
-
   </world>
 </sdf>

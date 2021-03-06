@@ -91,6 +91,20 @@ def simple_pick_place():
 
     # Fourth State
 
+    # We can get the joint values from the group and adjust some of the values:
+    joint_goal = robot2_group.get_current_joint_values()
+    print(joint_goal)
+    joint_goal[0] = 0.040
+
+    # The go command can be called with joint values, poses, or without any
+    # parameters if you have already set the pose or joint target for the group
+    robot2_group.go(joint_goal, wait=True)
+
+    # Calling ``stop()`` ensures that there is no residual movement
+    robot2_group.stop()
+
+    # Fourth State
+
     pose_goal = geometry_msgs.msg.Pose()
     pose_goal.position.x = 0.0203439
     pose_goal.position.y = 0.189837

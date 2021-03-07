@@ -28,7 +28,7 @@
   <arg name="urdf_path" default="$(find mecademic_description)/urdf/meca_500_r3.urdf.xacro"/>
 
   <!-- launch the gazebo simulator and spawn the robot -->
-  <include file="$(find meca_500_moveit_config)/launch/gazebo.launch" >
+  <include file="$(find gazebo_plugin)/world.launch" >
     <arg name="paused" value="$(arg paused)"/>
     <arg name="gazebo_gui" value="$(arg gazebo_gui)"/>
     <arg name="urdf_path" value="$(arg urdf_path)"/>

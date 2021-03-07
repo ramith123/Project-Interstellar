@@ -20,12 +20,12 @@
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
 
   <export>
   <!-- TODO: find out which one actually works.. -->
-    <gazebo_ros gazebo_plugin_path="${prefix}/lib" />
-    <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}/../src/gazebo_plugin/models"/>
-    <gazebo_ros gazebo_model_path="${prefix}/../src/gazebo_plugin/models"/>
-    <gazebo_ros gazebo_resource_path="${prefix}/../src/gazebo_plugin"/>
+    <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}/models"/>
+    <gazebo_ros gazebo_model_path="${prefix}/models"/>
+    <gazebo_ros gazebo_resource_path="${prefix}"/>
   </export>
 </package>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">>
-  <name>gazebo_pluginn</name>
+  <name>gazebo_plugin</name>
   <version>1.0.0</version>
   <description>Publishes the poses of cubes in the environment.</description>
 
@@ -26,5 +26,6 @@
     <gazebo_ros gazebo_plugin_path="${prefix}/lib" />
     <gazebo_ros plugin_path="${prefix}/lib" />
     <gazebo_ros gazebo_model_path="${prefix}/../src/gazebo_plugin/models"/>
+    <gazebo_ros gazebo_resource_path="${prefix}/../src/gazebo_plugin"/>
   </export>
 </package>

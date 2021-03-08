@@ -35,7 +35,7 @@ namespace gazebo
       ros::init(argc, argv, "gazebo_client", ros::init_options::NoSigintHandler);
       ros::NodeHandle rosNode;
       sendCubeLocations = rosNode.advertise<std_msgs::String>("locations", 1000);
-      // std::cout << "Loaded";
+      std::cout << "Loaded";
       // Store the pointer to the model
       this->model = _parent;
 

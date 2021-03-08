@@ -35,7 +35,7 @@ namespace gazebo
       ros::init(argc, argv, "gazebo_client", ros::init_options::NoSigintHandler);
       ros::NodeHandle rosNode;
       sendCubeLocations = rosNode.advertise<std_msgs::String>("locations", 1000);
-      std::cout << "Loaded";
+      // std::cout << "Loaded";
       // Store the pointer to the model
       this->model = _parent;
 
@@ -50,7 +50,7 @@ namespace gazebo
     void OnUpdate()
 
     {
-      std::cout << "Update";
+      // std::cout << "Update";
       this->publishToTopic();
     }
 
@@ -69,7 +69,6 @@ namespace gazebo
 
       double z = v1.Z(); // z coordinate
 
-
       std::string cubeLocations = this->model->GetScopedName() + "," + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + "\n";
       std_msgs::String msg;
       // std::cout << cubeLocations;
@@ -77,7 +76,7 @@ namespace gazebo
       ss << cubeLocations;
       msg.data = ss.str();
 
-      ROS_INFO("%s", msg.data.c_str());
+      // ROS_INFO("%s", msg.data.c_str());
       sendCubeLocations.publish(msg);
     }
   };

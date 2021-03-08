@@ -43,7 +43,7 @@ controller_list:
       - meca_axis_6_joint
 
 arm_controller:
-  type: position_controllers/JointTrajectoryController
+  type: effort_controllers/JointTrajectoryController
   joints:
     - meca_axis_1_joint
     - meca_axis_2_joint

@@ -73,7 +73,7 @@ def mecademic_robot_basic_movement():
 
     # Manual offsets because we don't have the senser coordinated from the gazebo plugin to detect cubes yet.
     new_eef_pose.position.x = current_pose.pose.position.x + 0.05
-    new_eef_pose.position.z = current_pose.pose.position.z - 0.2
+    new_eef_pose.position.z = current_pose.pose.position.z - 0.4
 
     # Retain orientation of the current pose.
     new_eef_pose.orientation = copy.deepcopy(current_pose.pose.orientation)

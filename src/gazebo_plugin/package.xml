@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package format="2">>
+  <name>gazebo_plugin</name>
+  <version>1.0.0</version>
+  <description>Publishes the poses of cubes in the environment.</description>
+
+  <author email="timothy.singh1@my.uwi.edu">Timothy Singh</author>
+  <maintainer email="timothy.singh1@my.uwi.edu">Timothy Singh</maintainer>
+  <maintainer email="ramith.kulatunga@my.uwi.com">Ramith Kulatunga</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_export_depend>roscpp</build_export_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+
+  <export>
+  <!-- TODO: find out which one actually works.. -->
+    <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}/models"/>
+    <gazebo_ros gazebo_model_path="${prefix}/models"/>
+    <gazebo_ros gazebo_resource_path="${prefix}"/>
+  </export>
+</package>

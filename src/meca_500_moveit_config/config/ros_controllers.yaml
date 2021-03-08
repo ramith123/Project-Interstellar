@@ -93,3 +93,9 @@ hand_controller:
       d: 50
       i: 0
       i_clamp: 1
+
+    meca_finger_joint2:
+      p: 100
+      d: 50
+      i: 0
+      i_clamp: 1

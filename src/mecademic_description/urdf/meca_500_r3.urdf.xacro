@@ -230,36 +230,7 @@
                 <box size="0.07 0.04 0.2" />
             </geometry>
         </collision>
-        <!-- <collision>
-            <origin rpy="0 0 0" xyz="0 -0.05 0.04" />
-            <geometry>
-                <sphere radius="0.07" />
-            </geometry>
-        </collision>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0.05 0.04" />
-            <geometry>
-                <sphere radius="0.07" />
-            </geometry>
-        </collision> -->
-        <!-- <collision>
-            <origin rpy="0 1.57079632679 1.57079632679" xyz="0 0 0.1" />
-            <geometry>
-                <cylinder length="0.1" radius="0.05" />
-            </geometry>
-        </collision>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 -0.05 0.1" />
-            <geometry>
-                <sphere radius="0.05" />
-            </geometry>
-        </collision>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0.05 0.1" />
-            <geometry>
-                <sphere radius="0.05" />
-            </geometry>
-        </collision> -->
+
 
         <inertial>
             <mass value="0.1" />
@@ -457,5 +428,23 @@
     <gazebo reference="meca_finger_joint2">
         <implicitSpringDamper>1</implicitSpringDamper>
     </gazebo> -->
+    <gazebo>
+        <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
+            <arm>
+                <arm_name>meca_arm</arm_name>
+                <palm_link>meca_axis_6_link</palm_link>
+                <gripper_link>meca_leftfinger</gripper_link>
+                <gripper_link> meca_rightfinger </gripper_link>
+
+            </arm>
+            <forces_angle_tolerance>100</forces_angle_tolerance>
+            <update_rate>4</update_rate>
+            <grip_count_threshold>4</grip_count_threshold>
+            <max_grip_count>8</max_grip_count>
+            <release_tolerance>0.005</release_tolerance>
+            <disable_collisions_on_attach>false</disable_collisions_on_attach>
+            <contact_topic>__default_topic__</contact_topic>
+        </plugin>
+    </gazebo>
 
 </robot>

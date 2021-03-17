@@ -73,7 +73,7 @@ def mecademic_robot_basic_movement():
 
     # Manual offsets because we don't have the senser coordinated from the gazebo plugin to detect cubes yet.
     new_eef_pose.position.x = current_pose.pose.position.x + 0.05
-    new_eef_pose.position.z = current_pose.pose.position.z - 0.2
+    new_eef_pose.position.z = current_pose.pose.position.z - 0.4
 
     # Retain orientation of the current pose.
     new_eef_pose.orientation = copy.deepcopy(current_pose.pose.orientation)
@@ -135,7 +135,7 @@ def mecademic_robot_basic_movement():
     new_eef_pose = geometry_msgs.msg.Pose()
 
     new_eef_pose.position.y = current_pose.pose.position.y + 0.05
-    new_eef_pose.position.z = current_pose.pose.position.z - 0.2
+    new_eef_pose.position.z = current_pose.pose.position.z - 0.4
     new_eef_pose.orientation = copy.deepcopy(current_pose.pose.orientation)
 
     waypoints.append(new_eef_pose)
@@ -156,11 +156,41 @@ def mecademic_robot_basic_movement():
     meca_arm_client.send_goal(meca_arm_goal)
     meca_arm_client.wait_for_result()
 
-    # Open fingers in order to place cube
+    # move robot up in order to place cube
     joint_goal = meca_fingers_group.get_current_joint_values()
     joint_goal[0] = 0.040
     meca_fingers_group.go(joint_goal, wait=True)
     meca_fingers_group.stop()
+    rospy.sleep(2)
+
+    # move robot up a bit to clear the cube
+    waypoints = []
+    current_pose = meca_arm_group.get_current_pose()
+    rospy.sleep(0.5)
+    current_pose = meca_arm_group.get_current_pose()
+
+    new_eef_pose = geometry_msgs.msg.Pose()
+
+    new_eef_pose.position.y = current_pose.pose.position.y
+    new_eef_pose.position.z = current_pose.pose.position.z + 0.4
+    new_eef_pose.orientation = copy.deepcopy(current_pose.pose.orientation)
+
+    waypoints.append(new_eef_pose)
+    fraction = 0.0
+    for count_cartesian_path in range(0, 3):
+        if fraction < 1.0:
+            (plan_cartesian, fraction) = meca_arm_group.compute_cartesian_path(
+                waypoints,   # waypoints to follow
+                0.01,
+                0.0)
+        else:
+            print('error')
+            break
+
+    meca_arm_goal = moveit_msgs.msg.ExecuteTrajectoryGoal()
+    meca_arm_goal.trajectory = plan_cartesian
+    meca_arm_client.send_goal(meca_arm_goal)
+    meca_arm_client.wait_for_result()
 
     # Return to robot home position
     joint_goal = meca_arm_group.get_current_joint_values()

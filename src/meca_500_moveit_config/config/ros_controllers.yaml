@@ -43,7 +43,7 @@ controller_list:
       - meca_axis_6_joint
 
 arm_controller:
-  type: position_controllers/JointTrajectoryController
+  type: effort_controllers/JointTrajectoryController
   joints:
     - meca_axis_1_joint
     - meca_axis_2_joint
@@ -89,6 +89,12 @@ hand_controller:
 
   gains:
     meca_finger_joint1:
+      p: 100
+      d: 50
+      i: 0
+      i_clamp: 1
+
+    meca_finger_joint2:
       p: 100
       d: 50
       i: 0

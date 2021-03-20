@@ -1,176 +1,215 @@
 #!/usr/bin/env python
-
-
 import sys
 import copy
 import rospy
 import moveit_commander
 import moveit_msgs.msg
-import geometry_msgs.msg
-from math import pi
-from std_msgs.msg import String
-from moveit_commander.conversions import pose_to_list
+import actionlib
+import geometry_msgs
 
 
-class MoveGroupPythonIntefaceTutorial(object):
-    """MoveGroupPythonIntefaceTutorial"""
+def mecademic_robot_basic_movement():
 
-    def __init__(self):
-        super(MoveGroupPythonIntefaceTutorial, self).__init__()
+    # First initialize moveit_commander and rospy to interact with the MoveIt node and facilitate communication within the ros env
+    moveit_commander.roscpp_initialize(sys.argv)
+    rospy.init_node('simple_pick_place',
+                    anonymous=True)
 
-        # BEGIN_SUB_TUTORIAL setup
-        ##
-        # First initialize `moveit_commander`_ and a `rospy`_ node:
-        moveit_commander.roscpp_initialize(sys.argv)
-        rospy.init_node('robot_movement', anonymous=True)
+    # Instantiate a MoveGroupCommander object.  This object is an interface
+    # to one group of joints.  In this case the group refers to the joints of
+    # the meca_arm.
+    meca_arm_group = moveit_commander.MoveGroupCommander("meca_arm")
+    # MoveGroup Commander Object for the mecademic hand.
+    meca_fingers_group = moveit_commander.MoveGroupCommander("hand")
 
-        # Instantiate a `RobotCommander`_ object. Provides information such as the robot's
-        # kinematic model and the robot's current joint states
-        robot = moveit_commander.RobotCommander()
+    # Action clients to the ExecuteTrajectory action server
+    meca_arm_client = actionlib.SimpleActionClient('execute_trajectory',
+                                                   moveit_msgs.msg.ExecuteTrajectoryAction)
 
-        # Instantiate a `PlanningSceneInterface`_ object.  This provides a remote interface
-        # for getting, setting, and updating the robot's internal understanding of the
-        # surrounding world:
-        scene = moveit_commander.PlanningSceneInterface()
+    # Ensure that the server is ready to receive request
+    meca_arm_client.wait_for_server()
 
-        # Instantiate a `MoveGroupCommander`_ object.  This object is an interface
-        # to a planning group (group of joints).  In this tutorial the group is the primary
-        # arm joints in the Panda robot, so we set the group's name to "panda_arm".
-        # If you are using a different robot, change this value to the name of your robot
-        # arm planning group.
-        # This interface can be used to plan and execute motions:
-        group_name = "meca_arm"
-        move_group = moveit_commander.MoveGroupCommander(group_name)
+    meca_fingers_client = actionlib.SimpleActionClient('execute_trajectory',
+                                                       moveit_msgs.msg.ExecuteTrajectoryAction)
+    meca_fingers_client.wait_for_server()
 
-        # Create a `DisplayTrajectory`_ ROS publisher which is used to display
-        # trajectories in Rviz:
-        display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path',
-                                                       moveit_msgs.msg.DisplayTrajectory,
-                                                       queue_size=20)
+    # Ensure that the robot begins at its home position
+    # Set a named joint configuration as the goal to plan for a move group.
+    # Named joint configurations are the robot poses defined via MoveIt! Setup Assistant.
+    meca_arm_group.set_named_target("home pose")
 
-        # END_SUB_TUTORIAL
+    # Plan to the desired joint-space goal using the default planner (RRTConnect).
+    meca_arm_home = meca_arm_group.plan()
+    # Create a goal message object for the action server.
+    meca_arm_goal = moveit_msgs.msg.ExecuteTrajectoryGoal()
+    # Update the trajectory in the goal message.
+    meca_arm_goal.trajectory = meca_arm_home
 
-        # BEGIN_SUB_TUTORIAL basic_info
-        ##
-        # Getting Basic Information
-        # ^^^^^^^^^^^^^^^^^^^^^^^^^
-        # We can get the name of the reference frame for this robot:
-        planning_frame = move_group.get_planning_frame()
-        print("============ Planning frame: %s" % planning_frame)
+    # Send the goal to the action server.
+    meca_arm_client.send_goal(meca_arm_goal)
+    meca_arm_client.wait_for_result()
 
-        # We can also print the name of the end-effector link for this group:
-        eef_link = move_group.get_end_effector_link()
-        print("============ End effector link: %s" % eef_link)
+    # Ensure that the robot fingers are opened to pick up cube
+    # We can get the joint values from the group and adjust some of the values:
+    joint_goal = meca_fingers_group.get_current_joint_values()
+    print(joint_goal)
+    joint_goal[0] = 0.040
 
-        # We can get a list of all the groups in the robot:
-        group_names = robot.get_group_names()
-        print("============ Available Planning Groups:", robot.get_group_names())
+    # Move to the specified joint goal
+    meca_fingers_group.go(joint_goal, wait=True)
 
-        # Sometimes for debugging it is useful to print the entire state of the
-        # robot:
-        print("============ Printing robot state")
-        print(robot.get_current_state())
-        print("")
-        # END_SUB_TUTORIAL
+    # ensures that there is no residual movement
+    meca_fingers_group.stop()
 
-        # Misc variables
-        self.box_name = ''
-        self.robot = robot
-        self.scene = scene
-        self.move_group = move_group
-        self.display_trajectory_publisher = display_trajectory_publisher
-        self.planning_frame = planning_frame
-        self.eef_link = eef_link
-        self.group_names = group_names
+    # Cartesian path movement to pre grasp position
+    waypoints = []
+    # start with the current pose
+    current_pose = meca_arm_group.get_current_pose()
+    rospy.sleep(0.5)
+    current_pose = meca_arm_group.get_current_pose()
 
-    def go_to_pose_goal(self):
+    # create linear offsets to the current pose
+    new_eef_pose = geometry_msgs.msg.Pose()
 
-        # home = [0.202498, 1.58212e-07,
-        #         0.308, -7.20924e-07, 2.22244e-07, 4.16346e-07]
+    # Manual offsets because we don't have the senser coordinated from the gazebo plugin to detect cubes yet.
+    new_eef_pose.position.x = current_pose.pose.position.x + 0.05
+    new_eef_pose.position.z = current_pose.pose.position.z - 0.4
 
-        pose_goal = [0.0203439, 0.189837, 0.307987, -
-                     5.01149e-05, 1.45655e-05, 0.692353, 0.721559]
+    # Retain orientation of the current pose.
+    new_eef_pose.orientation = copy.deepcopy(current_pose.pose.orientation)
 
-        # move_group.set_pose_target(pose_goal)
+    waypoints.append(new_eef_pose)
 
-        self.move_group.set_pose_target(pose_goal, self.eef_link)
-        plan1 = self.move_group.plan()
+    # We want the cartesian path to be interpolated at a resolution of 1 cm
+    # which is why we will specify 0.01 as the eef_step in cartesian
+    # translation.  We will specify the jump threshold as 0.0, effectively
+    # disabling it.
+    fraction = 0.0
+    for count_cartesian_path in range(0, 3):
+        if fraction < 1.0:
+            (plan_cartesian, fraction) = meca_arm_group.compute_cartesian_path(
+                waypoints,   # waypoints to follow
+                0.01,        # eef_step
+                0.0)         # jump_threshold
+        else:
+            print('error')
+            break
 
-        # self.move_group.set_pose_target(home, self.eef_link)
-        # plan2 = self.move_group.plan()
+    meca_arm_goal = moveit_msgs.msg.ExecuteTrajectoryGoal()
+    meca_arm_goal.trajectory = plan_cartesian
+    meca_arm_client.send_goal(meca_arm_goal)
+    meca_arm_client.wait_for_result()
 
-        self.move_group.execute(plan1, wait=True)
-        # self.move_group.execute(plan2, wait=True)
+    # Close the mecademic robot fingers to pick cube up.
+    joint_goal = meca_fingers_group.get_current_joint_values()
+    print(joint_goal)
+    joint_goal[0] = 0.00
+    meca_fingers_group.go(joint_goal, wait=True)
+    meca_fingers_group.stop()
 
-        self.move_group.clear_pose_targets()
-        self.move_group.stop()
+    # Place the robot to its home position to begin place movement
+    joint_goal = meca_arm_group.get_current_joint_values()
+    print(joint_goal)
+    joint_goal[0] = 0
+    joint_goal[1] = 0
+    joint_goal[2] = 0
+    joint_goal[3] = 0
+    joint_goal[4] = 0
+    joint_goal[5] = 0
+    meca_arm_group.go(joint_goal, wait=True)
+    meca_arm_group.stop()
 
-    def plan_cartesian_path(self, scale=1):
+    # Rotate the robot 90%
+    joint_goal = meca_arm_group.get_current_joint_values()
+    print(joint_goal)
+    joint_goal[0] = 1.5708
+    meca_arm_group.go(joint_goal, wait=True)
+    meca_arm_group.stop()
 
-        waypoints = []
+    # Perform the pre-place movement
+    waypoints = []
+    current_pose = meca_arm_group.get_current_pose()
+    rospy.sleep(0.5)
+    current_pose = meca_arm_group.get_current_pose()
 
-        wpose = self.move_group.get_current_pose().pose
-        wpose.position.x = 0.0203439
-        wpose.position.y = 0.189837
-        wpose.position.z = 0.307987
+    new_eef_pose = geometry_msgs.msg.Pose()
 
-        wpose.orientation.x = -5.01149e-05
-        wpose.orientation.y = 1.45655e-05
-        wpose.orientation.z = 0.692353
-        wpose.orientation.w = 0.721559
+    new_eef_pose.position.y = current_pose.pose.position.y + 0.05
+    new_eef_pose.position.z = current_pose.pose.position.z - 0.4
+    new_eef_pose.orientation = copy.deepcopy(current_pose.pose.orientation)
 
-        waypoints.append(copy.deepcopy(wpose))
+    waypoints.append(new_eef_pose)
 
-        # wpose.position.x += scale * 0.1  # Second move forward/backwards in (x)
-        # waypoints.append(copy.deepcopy(wpose))
+    fraction = 0.0
+    for count_cartesian_path in range(0, 3):
+        if fraction < 1.0:
+            (plan_cartesian, fraction) = meca_arm_group.compute_cartesian_path(
+                waypoints,   # waypoints to follow
+                0.01,
+                0.0)
+        else:
+            print('error')
+            break
 
-        # wpose.position.y -= scale * 0.1  # Third move sideways (y)
-        # waypoints.append(copy.deepcopy(wpose))
+    meca_arm_goal = moveit_msgs.msg.ExecuteTrajectoryGoal()
+    meca_arm_goal.trajectory = plan_cartesian
+    meca_arm_client.send_goal(meca_arm_goal)
+    meca_arm_client.wait_for_result()
 
-        # We want the Cartesian path to be interpolated at a resolution of 1 cm
-        # which is why we will specify 0.01 as the eef_step in Cartesian
-        # translation.  We will disable the jump threshold by setting it to 0.0,
-        # ignoring the check for infeasible jumps in joint space, which is sufficient
-        # for this tutorial.
-        (plan, fraction) = self.move_group.compute_cartesian_path(
-            waypoints,   # waypoints to follow
-            0.01,        # eef_step
-            0.0)         # jump_threshold
+    # move robot up in order to place cube
+    joint_goal = meca_fingers_group.get_current_joint_values()
+    joint_goal[0] = 0.040
+    meca_fingers_group.go(joint_goal, wait=True)
+    meca_fingers_group.stop()
+    rospy.sleep(2)
 
-        # Note: We are just planning, not asking move_group to actually move the robot yet:
-        return plan, fraction
+    # move robot up a bit to clear the cube
+    waypoints = []
+    current_pose = meca_arm_group.get_current_pose()
+    rospy.sleep(0.5)
+    current_pose = meca_arm_group.get_current_pose()
 
-    def display_trajectory(self, plan):
-        display_trajectory_publisher = self.display_trajectory_publisher
+    new_eef_pose = geometry_msgs.msg.Pose()
 
-        # BEGIN_SUB_TUTORIAL display_trajectory
-        ##
-        # Displaying a Trajectory
-        # ^^^^^^^^^^^^^^^^^^^^^^^
-        # You can ask RViz to visualize a plan (aka trajectory) for you. But the
-        # group.plan() method does this automatically so this is not that useful
-        # here (it just displays the same trajectory again):
-        ##
-        # A `DisplayTrajectory`_ msg has two primary fields, trajectory_start and trajectory.
-        # We populate the trajectory_start with our current robot state to copy over
-        # any AttachedCollisionObjects and add our plan to the trajectory.
-        display_trajectory = moveit_msgs.msg.DisplayTrajectory()
-        display_trajectory.trajectory_start = self.robot.get_current_state()
-        display_trajectory.trajectory.append(plan)
-        # Publish
-        display_trajectory_publisher.publish(display_trajectory)
+    new_eef_pose.position.y = current_pose.pose.position.y
+    new_eef_pose.position.z = current_pose.pose.position.z + 0.4
+    new_eef_pose.orientation = copy.deepcopy(current_pose.pose.orientation)
 
-    def execute_plan(self, plan):
-        # Use execute if you would like the robot to follow
-        # the plan that has already been computed:
-        self.move_group.execute(plan, wait=True)
+    waypoints.append(new_eef_pose)
+    fraction = 0.0
+    for count_cartesian_path in range(0, 3):
+        if fraction < 1.0:
+            (plan_cartesian, fraction) = meca_arm_group.compute_cartesian_path(
+                waypoints,   # waypoints to follow
+                0.01,
+                0.0)
+        else:
+            print('error')
+            break
 
-        # **Note:** The robot's current joint state must be within some tolerance of the
-        # first waypoint in the `RobotTrajectory`_ or ``execute()`` will fail
+    meca_arm_goal = moveit_msgs.msg.ExecuteTrajectoryGoal()
+    meca_arm_goal.trajectory = plan_cartesian
+    meca_arm_client.send_goal(meca_arm_goal)
+    meca_arm_client.wait_for_result()
+
+    # Return to robot home position
+    joint_goal = meca_arm_group.get_current_joint_values()
+    print(joint_goal)
+    joint_goal[0] = 0
+    joint_goal[1] = 0
+    joint_goal[2] = 0
+    joint_goal[3] = 0
+    joint_goal[4] = 0
+    joint_goal[5] = 0
+    meca_arm_group.go(joint_goal, wait=True)
+    meca_arm_group.stop()
+
+    # When finished shut down moveit_commander.
+    moveit_commander.roscpp_shutdown()
 
 
-tutorial = MoveGroupPythonIntefaceTutorial()
-# tutorial.go_to_pose_goal()
-plan, fraction = tutorial.plan_cartesian_path()
-tutorial.display_trajectory(plan)
-tutorial.execute_plan(plan)
+if __name__ == '__main__':
+    try:
+        mecademic_robot_basic_movement()
+    except rospy.ROSInterruptException:
+        pass

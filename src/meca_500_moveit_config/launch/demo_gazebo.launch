@@ -28,13 +28,8 @@
 
 
   <!-- launch the gazebo simulator and spawn the robot -->
-  <include file="$(find gazebo_plugin)/world.launch">
-    <arg name="paused" value="$(arg paused)" />
-    <arg name="gazebo_gui" value="$(arg gazebo_gui)" />
-  </include>
-
-
-  <include file="$(find meca_500_moveit_config)/launch/robots.launch" />
+  <include file="$(find meca_500_moveit_config)/launch/start.launch" />
+  <include file="$(find meca_500_moveit_config)/launch/demo_planning_execution.launch" />
 
 
   <!-- We do not have a robot connected, so publish fake joint states -->

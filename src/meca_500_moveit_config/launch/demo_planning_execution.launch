@@ -1,0 +1,45 @@
+<launch>
+    <group ns="robot1">
+        <rosparam command="load" file="$(find meca_500_moveit_config)/config/joint_names.yaml" />
+
+        <include file="$(find meca_500_moveit_config)/launch/planning_context.launch">
+            <arg name="load_robot_description" value="true" />
+        </include>
+
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+            <param name="/use_gui" value="false" />
+            <rosparam param="/source_list">[/joint_states]</rosparam>
+        </node>
+
+        <include file="$(find meca_500_moveit_config)/launch/move_group.launch">
+            <arg name="publish_monitored_planning_scene" value="true" />
+        </include>
+        <include file="$(find mecademic_viz)/launch/moveit_rviz_robot1.launch">
+            <arg name="config" value="true" />
+        </include>
+
+
+    </group>
+
+    <group ns="robot2">
+        <rosparam command="load" file="$(find meca_500_moveit_config)/config/joint_names.yaml" />
+
+        <include file="$(find meca_500_moveit_config)/launch/planning_context.launch">
+            <arg name="load_robot_description" value="true" />
+        </include>
+
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+            <param name="/use_gui" value="false" />
+            <rosparam param="/source_list">[/joint_states]</rosparam>
+        </node>
+
+        <include file="$(find meca_500_moveit_config)/launch/move_group.launch">
+            <arg name="publish_monitored_planning_scene" value="true" />
+        </include>
+        <include file="$(find mecademic_viz)/launch/moveit_rviz_robot2.launch">
+            <arg name="config" value="true" />
+        </include>
+
+
+    </group>
+</launch>

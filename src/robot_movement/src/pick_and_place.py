@@ -18,9 +18,9 @@ def mecademic_robot_basic_movement():
     # Instantiate a MoveGroupCommander object.  This object is an interface
     # to one group of joints.  In this case the group refers to the joints of
     # the meca_arm.
-    meca_arm_group = moveit_commander.MoveGroupCommander("meca_arm")
+    meca_arm_group = moveit_commander.MoveGroupCommander("robot1/meca_arm")
     # MoveGroup Commander Object for the mecademic hand.
-    meca_fingers_group = moveit_commander.MoveGroupCommander("hand")
+    meca_fingers_group = moveit_commander.MoveGroupCommander("robot2/hand")
 
     # Action clients to the ExecuteTrajectory action server
     meca_arm_client = actionlib.SimpleActionClient('execute_trajectory',

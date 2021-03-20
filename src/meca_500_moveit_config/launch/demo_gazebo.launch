@@ -3,7 +3,7 @@
   <!-- By default, we do not start a database (it can be large) -->
   <arg name="db" default="false" />
   <!-- Allow user to specify database location -->
-  <arg name="db_path" default="$(find meca_500_moveit_config)/default_warehouse_mongo_db" />
+  <!-- <arg name="db_path" default="$(find meca_500_moveit_config)/default_warehouse_mongo_db" /> -->
 
   <!-- By default, we are not in debug mode -->
   <arg name="debug" default="false" />
@@ -31,13 +31,13 @@
   <include file="$(find gazebo_plugin)/world.launch">
     <arg name="paused" value="$(arg paused)" />
     <arg name="gazebo_gui" value="$(arg gazebo_gui)" />
-
   </include>
+
+
   <param name="robot_description" textfile="$(arg urdf_path)" />
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -x 0 -y 0 -z 0" respawn="false" output="screen" />
-
   <include file="$(find meca_500_moveit_config)/launch/ros_controllers.launch" />
-  <!-- If needed, broadcast static tf for robot root -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
 
 
   <!-- We do not have a robot connected, so publish fake joint states -->
@@ -51,7 +51,7 @@
   </node> -->
 
   <!-- Given the published joint states, publish tf for the robot links -->
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
+
 
   <!-- Run the main MoveIt! executable without trajectory execution (we do not have controllers configured by default) -->
   <include file="$(find meca_500_moveit_config)/launch/move_group.launch">
@@ -69,8 +69,8 @@
   </include>
 
   <!-- If database loading was enabled, start mongodb as well -->
-  <include file="$(find meca_500_moveit_config)/launch/default_warehouse_db.launch" if="$(arg db)">
+  <!-- <include file="$(find meca_500_moveit_config)/launch/default_warehouse_db.launch" if="$(arg db)">
     <arg name="moveit_warehouse_database_path" value="$(arg db_path)" />
-  </include>
+  </include> -->
 
 </launch>

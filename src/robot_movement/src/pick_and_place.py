@@ -9,11 +9,14 @@ from std_msgs.msg import String
 def clean_message(message):
     unformated_positions = message.data.strip("\n")
     positions = unformated_positions.split(",")
-    x = round(float(positions[1]), 2)
-    y = round(float(positions[2]), 2)
-    z = round(float(positions[3]), 2)
-    print("I heard %f %f %f", x, y, z)
-    return [x, y, z]
+    x = float(positions[1])
+    y = float(positions[2])
+    z = float(positions[3])
+    r = float(positions[4])
+    p = float(positions[5])
+    y = float(positions[6])
+    print("I heard %f %f %f %f %f %f", x, y, z, r, p, y)
+    return [[x, y, z], [r, p, y]]
 
 
 def mecademic_robot_basic_movement():
@@ -24,7 +27,7 @@ def mecademic_robot_basic_movement():
     # rospy.Subscriber("locations", String, callback)
 
     msg = rospy.wait_for_message("locations", String)
-    cube_position = clean_message(msg)
+    cube_location = clean_message(msg)
 
     # Instantiate a MoveGroupCommander object.  This object is an interface
     # to one group of joints.  In this case the group refers to the joints of
@@ -43,7 +46,8 @@ def mecademic_robot_basic_movement():
     meca_fingers_group.move_via_joint_values([0.040, -1])
 
     # Cartesian path movement to pre grasp position
-    meca_arm_group.go_to_pose_goal(cube_position)
+    meca_arm_group.absolute_cartesian_movement(
+        cube_location[0], cube_location[1])
 
     # Close the mecademic robot fingers to pick cube up.
     meca_fingers_group.move_via_joint_values([0.00, -1])
@@ -55,13 +59,13 @@ def mecademic_robot_basic_movement():
     meca_arm_group.move_via_joint_values([1.5708])
 
     # Perform the pre-place movement
-    meca_arm_group.cartesian_movement([-999, 0.05, -0.4])
+    meca_arm_group.relative_cartesian_movement([-999, 0.05, -0.4])
 
     # Open the mecademic robot fingers to place cube.
     meca_fingers_group.move_via_joint_values([0.040, -1])
 
     # move robot up a bit to clear the cube
-    meca_arm_group.cartesian_movement([-999, 0, 0.3])
+    meca_arm_group.relative_cartesian_movement([-999, 0, 0.25])
 
     meca_arm_group.move_to_home()
 

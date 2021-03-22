@@ -66,14 +66,15 @@ namespace gazebo
       pose = this->model->WorldPose();
       v1 = pose.Pos();
       v2 = pose.Rot();
-      double x = v1.X(); // x coordinate
-      double y = v1.Y(); // y coordinate
-      double z = v1.Z(); // z coordinate
-      double roll = v2.Roll();  // roll
-      double pitch = v2.Pitch();  // pitch
-      double yaw = v2.Yaw();  // yaw
+      double x = v1.X();         // x coordinate
+      double y = v1.Y();         // y coordinate
+      double z = v1.Z();         // z coordinate
+      double roll = v2.Roll();   // roll
+      double pitch = v2.Pitch(); // pitch
+      double yaw = v2.Yaw();     // yaw
+      double w = v2.W();         // w or rotation around the vector
 
-      std::string cubeLocations = this->model->GetScopedName() + "," + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + "," + std::to_string(roll) + "," + std::to_string(pitch) + "," + std::to_string(yaw) + "\n";
+      std::string cubeLocations = this->model->GetScopedName() + "," + std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z) + "," + std::to_string(roll) + "," + std::to_string(pitch) + "," + std::to_string(yaw) + "," + std::to_string(w) + "\n";
       std_msgs::String msg;
       // std::cout << cubeLocations;
       std::stringstream ss;

@@ -2,7 +2,7 @@
 <sdf version="1.5">
   <model name="table">
     <static>true</static>
-    <link name="link">
+    <link name="tabletop">
       <collision name="surface">
         <pose>0 0 1.0 0 0 0</pose>
         <geometry>

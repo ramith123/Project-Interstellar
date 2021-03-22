@@ -5,7 +5,7 @@
 <!-- =================================================================================== -->
 <robot name="meca_500_r3">
     <!-- Base link is the center of the robot's bottom plate -->
-    <link name="world" />
+    <link name="world"/>
     <joint name="world_joint" type="fixed">
         <parent link="world" />
         <child link="meca_base_link" />

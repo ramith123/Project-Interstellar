@@ -79,12 +79,9 @@ class MoveGroup():
 
         # Manual offsets because we don't have the senser coordinated from the gazebo plugin to detect cubes yet.
 
-        if position_array[0] != -999:
-            new_eef_pose.position.x = position_array[0]  # 0.05
-        if position_array[1] != -999:
-            new_eef_pose.position.y = position_array[1]  # - 0.4
-        if position_array[2] != -999:
-            new_eef_pose.position.z = position_array[2]  # - 0.4
+        new_eef_pose.position.x = position_array[0]
+        new_eef_pose.position.y = position_array[1]
+        new_eef_pose.position.z = position_array[2]
 
         if orientation_array == []:
             # Retain orientation of the current pose.
@@ -94,6 +91,7 @@ class MoveGroup():
             new_eef_pose.orientation.x = orientation_array[0]
             new_eef_pose.orientation.y = orientation_array[1]
             new_eef_pose.orientation.z = orientation_array[2]
+            new_eef_pose.orientation.w = orientation_array[3]
 
         waypoints.append(new_eef_pose)
         print(new_eef_pose)
@@ -134,13 +132,13 @@ class MoveGroup():
 
         if position_array[0] != -999:
             new_eef_pose.position.x = current_pose.pose.position.x + \
-                position_array[0]  # 0.05
+                position_array[0]
         if position_array[1] != -999:
             new_eef_pose.position.y = current_pose.pose.position.y + \
-                position_array[1]  # - 0.4
+                position_array[1]
         if position_array[2] != -999:
             new_eef_pose.position.z = current_pose.pose.position.z + \
-                position_array[2]  # - 0.4
+                position_array[2]
 
         if orientation_array == []:
             # Retain orientation of the current pose.
@@ -150,6 +148,7 @@ class MoveGroup():
             new_eef_pose.orientation.x = orientation_array[0]
             new_eef_pose.orientation.y = orientation_array[1]
             new_eef_pose.orientation.z = orientation_array[2]
+            new_eef_pose.orientation.w = orientation_array[3]
 
         waypoints.append(new_eef_pose)
         print(new_eef_pose)
@@ -184,6 +183,7 @@ class MoveGroup():
             pose_goal.orientation.x = orientation[0]
             pose_goal.orientation.y = orientation[1]
             pose_goal.orientation.z = orientation[2]
+            pose_goal.orientation.w = orientation[3]
 
         self.meca_group.set_pose_target(pose_goal)
 

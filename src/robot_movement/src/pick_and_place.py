@@ -9,14 +9,15 @@ from std_msgs.msg import String
 def clean_message(message):
     unformated_positions = message.data.strip("\n")
     positions = unformated_positions.split(",")
-    x = float(positions[1])
-    y = float(positions[2])
-    z = float(positions[3])
-    r = float(positions[4])
-    p = float(positions[5])
-    y = float(positions[6])
-    print("I heard %f %f %f %f %f %f", x, y, z, r, p, y)
-    return [[x, y, z], [r, p, y]]
+    x = round(float(positions[1]), 5)
+    y = round(float(positions[2]), 5)
+    z = round(float(positions[3]), 5)
+    roll = round(float(positions[4]), 5)
+    pitch = round(float(positions[5]), 5)
+    yaw = round(float(positions[6]), 5)
+    w = round(float(positions[7]), 5)
+    print("I heard %f %f %f %f %f %f", x, y, z, roll, pitch, yaw, w)
+    return [[x, y, z], [roll, pitch, yaw, w]]
 
 
 def mecademic_robot_basic_movement():
@@ -28,6 +29,9 @@ def mecademic_robot_basic_movement():
 
     msg = rospy.wait_for_message("locations", String)
     cube_location = clean_message(msg)
+    cube_location[0][1] -= .2
+    # cube_location[0][0] += .2
+    # cube_location[0][2] += .2
 
     # Instantiate a MoveGroupCommander object.  This object is an interface
     # to one group of joints.  In this case the group refers to the joints of

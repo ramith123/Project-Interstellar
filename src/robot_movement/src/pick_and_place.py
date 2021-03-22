@@ -3,12 +3,28 @@ import sys
 import rospy
 import moveit_commander
 from MoveGroup import MoveGroup
+from std_msgs.msg import String
+
+
+def clean_message(message):
+    unformated_positions = message.data.strip("\n")
+    positions = unformated_positions.split(",")
+    x = round(float(positions[1]), 2)
+    y = round(float(positions[2]), 2)
+    z = round(float(positions[3]), 2)
+    print("I heard %f %f %f", x, y, z)
+    return [x, y, z]
 
 
 def mecademic_robot_basic_movement():
     # First initialize moveit_commander and rospy to interact with the MoveIt node and facilitate communication within the ros env
     moveit_commander.roscpp_initialize(sys.argv)
     rospy.init_node('simple_pick_place', anonymous=True)
+
+    # rospy.Subscriber("locations", String, callback)
+
+    msg = rospy.wait_for_message("locations", String)
+    cube_position = clean_message(msg)
 
     # Instantiate a MoveGroupCommander object.  This object is an interface
     # to one group of joints.  In this case the group refers to the joints of
@@ -27,7 +43,7 @@ def mecademic_robot_basic_movement():
     meca_fingers_group.move_via_joint_values([0.040, -1])
 
     # Cartesian path movement to pre grasp position
-    meca_arm_group.cartesian_movement([0.05, -999, -0.4])
+    meca_arm_group.go_to_pose_goal(cube_position)
 
     # Close the mecademic robot fingers to pick cube up.
     meca_fingers_group.move_via_joint_values([0.00, -1])

@@ -115,3 +115,16 @@ class MoveGroup():
         meca_goal.trajectory = plan_cartesian
         self.meca_client.send_goal(meca_goal)
         self.meca_client.wait_for_result()
+
+    def go_to_pose_goal(self, position_array=[]):
+        pose_goal = geometry_msgs.msg.Pose()
+        pose_goal.position.x = position_array[0]
+        pose_goal.position.y = position_array[1]
+        pose_goal.position.z = position_array[2]
+
+        self.meca_group.set_pose_target(pose_goal)
+
+        plan = self.meca_group.go(wait=True)
+        # Calling `stop()` ensures that there is no residual movement
+        self.meca_group.stop()
+        self.meca_group.clear_pose_targets()

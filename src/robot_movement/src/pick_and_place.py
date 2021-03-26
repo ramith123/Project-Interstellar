@@ -9,9 +9,9 @@ from std_msgs.msg import String
 def clean_message(message):
     unformated_positions = message.data.strip("\n")
     positions = unformated_positions.split(",")
-    x = round(float(positions[1]), 5)
-    y = round(float(positions[2]), 5)
-    z = round(float(positions[3]), 5)
+    x = round(float(positions[1]), 2)
+    y = round(float(positions[2]), 2)
+    z = round(float(positions[3]), 2)
     roll = round(float(positions[4]), 5)
     pitch = round(float(positions[5]), 5)
     yaw = round(float(positions[6]), 5)
@@ -22,20 +22,27 @@ def clean_message(message):
 
 def add_offsets(cube_location):
     y_axis_position = cube_location[0][1]
+    x_axis_position = cube_location[0][0]
+    cube_location[0][2] -= 1
+
+    if -0.10 < y_axis_position < 0.1:
+        if x_axis_position <= 0.31:
+            cube_location[0][0] -= 0.15
+        elif x_axis_position > 0.35:
+            cube_location[0][0] += 0.05
+        return cube_location
 
     if y_axis_position > 0.1:
-        cube_location[0][1] += .20
-        cube_location[0][0] -= .05
-        cube_location[0][2] -= .40
+        cube_location[0][1] += (cube_location[0][1] * 4)
 
-    elif y_axis_position < -0.1:
-        cube_location[0][1] -= .20
-        cube_location[0][0] -= .05
-        cube_location[0][2] -= .40
+    elif y_axis_position < -0.10:
+        cube_location[0][1] -= (cube_location[0][1] * -4)
 
-    else:
-        cube_location[0][0] -= .05
-        cube_location[0][2] -= .40
+    if x_axis_position > 0.3:
+        cube_location[0][0] += (cube_location[0][0] * 2)
+
+    elif x_axis_position <= 0.3:
+        cube_location[0][0] -= (cube_location[0][0] * 2)
 
     return cube_location
 

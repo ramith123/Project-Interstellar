@@ -20,6 +20,26 @@ def clean_message(message):
     return [[x, y, z], [roll, pitch, yaw, w]]
 
 
+def add_offsets(cube_location):
+    y_axis_position = cube_location[0][1]
+
+    if y_axis_position > 0.1:
+        cube_location[0][1] += .20
+        cube_location[0][0] -= .05
+        cube_location[0][2] -= .40
+
+    elif y_axis_position < -0.1:
+        cube_location[0][1] -= .20
+        cube_location[0][0] -= .05
+        cube_location[0][2] -= .40
+
+    else:
+        cube_location[0][0] -= .05
+        cube_location[0][2] -= .40
+
+    return cube_location
+
+
 def mecademic_robot_basic_movement():
     # First initialize moveit_commander and rospy to interact with the MoveIt node and facilitate communication within the ros env
     moveit_commander.roscpp_initialize(sys.argv)
@@ -28,10 +48,8 @@ def mecademic_robot_basic_movement():
     # rospy.Subscriber("locations", String, callback)
 
     msg = rospy.wait_for_message("locations", String)
-    cube_location = clean_message(msg)
-    cube_location[0][1] -= .2
-    # cube_location[0][0] += .2
-    # cube_location[0][2] += .2
+    orignal_cube_location = clean_message(msg)
+    new_cube_location = add_offsets(orignal_cube_location)
 
     # Instantiate a MoveGroupCommander object.  This object is an interface
     # to one group of joints.  In this case the group refers to the joints of
@@ -51,7 +69,7 @@ def mecademic_robot_basic_movement():
 
     # Cartesian path movement to pre grasp position
     meca_arm_group.absolute_cartesian_movement(
-        cube_location[0], cube_location[1])
+        new_cube_location[0], new_cube_location[1])
 
     # Close the mecademic robot fingers to pick cube up.
     meca_fingers_group.move_via_joint_values([0.00, -1])

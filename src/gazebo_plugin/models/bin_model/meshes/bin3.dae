@@ -5,9 +5,9 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.79.0 commit date:2018-03-22, commit time:14:10, hash:f4dc9f9d68b</authoring_tool>
     </contributor>
-    <created>2021-03-28T18:26:47</created>
-    <modified>2021-03-28T18:26:47</modified>
-    <unit name="meter" meter="1"/>
+    <created>2021-03-28T18:37:39</created>
+    <modified>2021-03-28T18:37:39</modified>
+    <unit name="millimeter" meter="0.001"/>
     <up_axis>Z_UP</up_axis>
   </asset>
   <library_images/>
@@ -58,7 +58,7 @@
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
       <node id="Box_thing" name="Box_thing" type="NODE">
-        <matrix sid="transform">0.001293396 0 0 0 0 -5.65361e-11 -0.001293396 0 0 0.001293396 -5.65361e-11 0.1777231 0 0 0 1</matrix>
+        <matrix sid="transform">0.001073686 0 0 0 0 -3.62861e-11 -9e-4 0 0 8.3013e-4 -3.93402e-11 0.1527185 0 0 0 1</matrix>
         <instance_geometry url="#Box_thing-mesh" name="Box_thing"/>
       </node>
     </visual_scene>

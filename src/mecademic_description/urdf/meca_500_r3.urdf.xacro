@@ -5,9 +5,23 @@
 <!-- =================================================================================== -->
 <robot name="meca_500_r3">
     <!-- Base link is the center of the robot's bottom plate -->
-    <link name="world"/>
+    <link name="base_plate">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 -0.005" />
+            <geometry>
+                <box size="0.1 0.1 0.01" />
+            </geometry>
+            <material name="white">
+                <color rgba="1 1.0 1.0 1.0" />
+            </material>
+        </visual>
+        <inertial>
+            <mass value="1000" />
+            <inertia ixx="0.03" ixy="0.0" ixz="0.0" iyy="0.03" iyz="0.0" izz="0.03" />
+        </inertial>
+    </link>
     <joint name="world_joint" type="fixed">
-        <parent link="world" />
+        <parent link="base_plate" />
         <child link="meca_base_link" />
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
     </joint>

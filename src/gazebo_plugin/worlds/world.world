@@ -12,7 +12,9 @@
     <include>
       <uri>model://box1</uri>
       <name>box1</name>
+
       <pose>0.043814 -0.048232 1.615006 0 0 0</pose>
+
     </include>
 
     <include>

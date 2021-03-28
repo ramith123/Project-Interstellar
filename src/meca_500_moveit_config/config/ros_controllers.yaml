@@ -20,9 +20,7 @@ hardware_interface:
   sim_control_mode: 1 # 0: position, 1: velocity
 # Publish all joint states
 # Creates the /joint_states topic necessary in ROS
-joint_state_controller:
-  type: joint_state_controller/JointStateController
-  publish_rate: 50
+
 controller_list:
   - name: hand_controller
     action_ns: follow_joint_trajectory
@@ -41,6 +39,9 @@ controller_list:
       - meca_axis_4_joint
       - meca_axis_5_joint
       - meca_axis_6_joint
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 50
 
 arm_controller:
   type: effort_controllers/JointTrajectoryController

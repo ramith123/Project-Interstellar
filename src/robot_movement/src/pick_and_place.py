@@ -44,7 +44,7 @@ def add_offsets(cube_location):
         cube_location[0][0] += (cube_location[0][0] * 2)
 
     elif x_axis_position <= 0.3:
-        cube_location[0][0] -= (cube_location[0][0] * 2)
+        cube_locatio[0][0] -= (cube_location[0][0] * 2)
 
     return cube_location
 
@@ -55,8 +55,8 @@ def mecademic_robot_basic_movement():
     rospy.init_node('simple_pick_place', anonymous=True)
 
     # rospy.Subscriber("locations", String, callback)
-
-    msg = rospy.wait_for_message("locations", String)
+    msg = rospy.wait_for_message("/locations", String)
+    
     orignal_cube_location = clean_message(msg)
     new_cube_location = add_offsets(orignal_cube_location)
 
@@ -106,6 +106,8 @@ def mecademic_robot_basic_movement():
 
 if __name__ == '__main__':
     try:
+        print("running Program")
         mecademic_robot_basic_movement()
     except rospy.ROSInterruptException:
+        print("Error occurred")
         pass

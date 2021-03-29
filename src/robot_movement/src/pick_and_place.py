@@ -44,7 +44,7 @@ def add_offsets(cube_location):
         cube_location[0][0] += (cube_location[0][0] * 2)
 
     elif x_axis_position <= 0.3:
-        cube_locatio[0][0] -= (cube_location[0][0] * 2)
+        cube_location[0][0] -= (cube_location[0][0] * 2)
 
     return cube_location
 

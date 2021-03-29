@@ -14,7 +14,8 @@ class MoveGroup():
         # Instantiate a MoveGroupCommander object.  This object is an interface
         # to one group of joints.  In this case the group refers to the joints of
         # the meca_arm.
-        self.meca_group = moveit_commander.MoveGroupCommander(move_group_name)
+        self.meca_group = moveit_commander.MoveGroupCommander(
+            move_group_name)
 
         # Action clients to the ExecuteTrajectory action server
         self.meca_client = actionlib.SimpleActionClient('execute_trajectory',

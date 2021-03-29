@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-import os
-os.environ["ROS_NAMESPACE"] = "/robot1"
-import sys
-import rospy
-import moveit_commander
-from MoveGroup import MoveGroup
 from std_msgs.msg import String
+from MoveGroup import MoveGroup
+import moveit_commander
+import rospy
+import sys
+import os
+os.environ["ROS_NAMESPACE"] = "/robot2"
 
 
 def clean_message(message):
@@ -56,7 +56,7 @@ def mecademic_robot_basic_movement():
 
     # rospy.Subscriber("locations", String, callback)
     msg = rospy.wait_for_message("/locations", String)
-    
+
     orignal_cube_location = clean_message(msg)
     new_cube_location = add_offsets(orignal_cube_location)
 
@@ -64,6 +64,8 @@ def mecademic_robot_basic_movement():
     # to one group of joints.  In this case the group refers to the joints of
     # the meca_arm.
     meca_arm_group = MoveGroup("meca_arm")
+
+    print("hello world")
 
     # MoveGroup Commander Object for the mecademic hand.
     meca_fingers_group = MoveGroup("hand")
@@ -78,7 +80,7 @@ def mecademic_robot_basic_movement():
 
     # Cartesian path movement to pre grasp position
     meca_arm_group.absolute_cartesian_movement(
-        new_cube_location[0], new_cube_location[1])
+        orignal_cube_location[0], orignal_cube_location[1])
 
     # Close the mecademic robot fingers to pick cube up.
     meca_fingers_group.move_via_joint_values([0.00, -1])

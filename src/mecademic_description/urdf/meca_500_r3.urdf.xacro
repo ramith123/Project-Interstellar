@@ -437,12 +437,12 @@
             </surface>
         </collision>
     </gazebo>
-    <!-- <gazebo reference="meca_finger_joint1">
+    <gazebo reference="meca_finger_joint1">
         <implicitSpringDamper>1</implicitSpringDamper>
     </gazebo>
     <gazebo reference="meca_finger_joint2">
         <implicitSpringDamper>1</implicitSpringDamper>
-    </gazebo> -->
+    </gazebo>
     <!-- <gazebo>
         <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
             <arm>

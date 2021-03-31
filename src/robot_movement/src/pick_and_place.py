@@ -6,13 +6,6 @@ import rospy
 import moveit_commander
 from MoveGroup import MoveGroup
 from std_msgs.msg import String
-from MoveGroup import MoveGroup
-import moveit_commander
-import rospy
-import sys
-import os
-os.environ["ROS_NAMESPACE"] = "/robot2"
-
 
 def clean_message(message):
     unformated_positions = message.data.strip("\n")

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os
-os.environ["ROS_NAMESPACE"] = "/robot1"
+os.environ["ROS_NAMESPACE"] = "/robot2"
 import sys
 import rospy
 import moveit_commander

@@ -1,0 +1,6 @@
+<launch>
+  
+  <node name="basic_movement2" pkg="robot_movement" type="pick_and_place_bin.py" respawn="false" output="screen">
+  </node>
+
+</launch>

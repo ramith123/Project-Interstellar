@@ -19,7 +19,7 @@
 
     <include>
       <uri>model://bin_model</uri>
-      <pose>0.043814 0 1.17 0 0 -1.5708</pose>
+      <pose>0.125158 0 1.083990 0 0 -1.5708</pose>
     </include>
 
     <include>

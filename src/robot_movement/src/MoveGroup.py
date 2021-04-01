@@ -77,11 +77,14 @@ class MoveGroup():
         # create linear offsets to the current pose
         new_eef_pose = geometry_msgs.msg.Pose()
 
-        # Manual offsets because we don't have the senser coordinated from the gazebo plugin to detect cubes yet.
 
-        new_eef_pose.position.x = position_array[0]
-        new_eef_pose.position.y = position_array[1]
-        new_eef_pose.position.z = position_array[2]
+        if position_array[0] != -999:
+            new_eef_pose.position.x = position_array[0]
+        if position_array[1] != -999:
+            new_eef_pose.position.y = position_array[1]
+        if position_array[2] != -999:
+            new_eef_pose.position.z = position_array[2]
+
 
         if orientation_array == []:
             # Retain orientation of the current pose.

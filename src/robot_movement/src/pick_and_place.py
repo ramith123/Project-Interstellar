@@ -64,8 +64,6 @@ def mecademic_robot_basic_movement():
     # the meca_arm.
     meca_arm_group = MoveGroup("meca_arm")
 
-    print("hello world")
-
     # MoveGroup Commander Object for the mecademic hand.
     meca_fingers_group = MoveGroup("hand")
 

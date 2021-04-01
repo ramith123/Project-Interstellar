@@ -1,0 +1,110 @@
+[33m6e9a92c[m[33m ([m[1;36mHEAD -> [m[1;32mdynamic_pick_and_place[m[33m, [m[1;31morigin/dynamic_pick_and_place[m[33m)[m box link pose fix
+[33m6b9d14f[m Making progress on dynamic pick and place
+[33m5e5585d[m Merge branch 'main' into dynamic_pick_and_place
+[33m37b429e[m Added alternate movement methods
+[33m96bb76e[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Merge pull request #20 from ramith123/quick-plugin-fix-to-add-w
+[33mc22d255[m w added
+[33m1ff2e73[m Merge branch 'main' into dynamic_pick_and_place
+[33me4f7086[m added pose position movement option
+[33mddf72b0[m Merge pull request #19 from ramith123/fixed-locations-for-Gazebo-plugin
+[33m4ff9657[m added roll, pitch and yaw to output from plugin
+[33m65e6448[m Added comments
+[33m890a262[m Refactored Code into OOP paradigm
+[33m060638a[m Merge pull request #18 from ramith123/pick_up_fix
+[33m52415dd[m modifed code a bit to move robot up after placing cube and wait to drop cube
+[33mc37f31a[m only one cube in the env and all position controllers are now effort controllers
+[33m652b6c6[m[33m ([m[1;31morigin/pick_up_fix[m[33m, [m[1;32mpick_up_fix[m[33m)[m lowerd the efforts
+[33m254ca47[m uncommented loaded from plugin
+[33mcf4686f[m hand can pickup stuff thanks to the plugin bhttps://github.com/JenniferBuehler/gazebo-pkgs
+[33m81170d8[m Commented out console output of the messages @Tim
+[33m28de12e[m demo_gazebo to launch everything and disbaled verbose on world.launch
+[33mfa4747c[m Updated box to  lower the weight
+[33m4f98a54[m Merge pull request #17 from ramith123/environment-setup
+[33me0fea22[m coloured cubes and attempted inertia values
+[33me48e03e[m changed core launch file to world.launch
+[33mdee6762[m made launch file for world
+[33m7592216[m fully migrated working plugin to src
+[33mcc54ac3[m moved gazebo plugin to src
+[33m765357f[m Merge pull request #16 from ramith123/basic-robot-control
+[33m4d3b66d[m[33m ([m[1;31morigin/basic-robot-control[m[33m)[m Successfull implemented pick place path movement
+[33meee30a3[m solved merge conflict
+[33m01f97f3[m Achieved finger manipulation
+[33mf4b87be[m Merge pull request #15 from ramith123/plugin-for-gazebo
+[33m56436b6[m Merge branch 'main' into plugin-for-gazebo
+[33m0a58a4a[m updated cube sizes
+[33m003eeda[m setting the hand open to 0.04 again
+[33m5b3aebf[m Merge branch 'main' into basic-robot-control
+[33m47d23ce[m Updated code comments
+[33m8788654[m Merge pull request #13 from ramith123/basic-robot-control
+[33med18a13[m Merge pull request #12 from ramith123/effort-controller-fix
+[33m4a22857[m Merge branch 'main' into effort-controller-fix
+[33m06c096e[m Merge pull request #14 from ramith123/plugin-for-gazebo
+[33m42394e7[m inertia fix
+[33mb48f741[m[33m ([m[1;31morigin/plugin-for-gazebo[m[33m)[m Merge branch 'plugin-for-gazebo' of https://github.com/ramith123/Project-Interstellar into plugin-for-gazebo
+[33mec88e24[m change cube sizes
+[33m4b5c4d4[m Merge branch 'effort-controller-fix' of https://github.com/ramith123/Project-Interstellar into effort-controller-fix
+[33mf04ad36[m inertia added but one finger missing
+[33m402828b[m switching to effort
+[33m19bb198[m collision fix
+[33m6781229[m Making progress on pick and place
+[33mf5ddad0[m Merge branch 'basic-robot-control' of https://github.com/ramith123/Project-Interstellar into basic-robot-control
+[33m9648c5c[m Working on pick and place pipeline
+[33me1ebb1e[m Merge pull request #11 from ramith123/Robot-color-change
+[33m005b0f6[m Merge pull request #10 from ramith123/urdf-fix-collision
+[33m4460cc0[m inertia added but one finger missing
+[33m6ce3558[m[33m ([m[1;31morigin/effort-controller-fix[m[33m)[m switching to effort
+[33m1f52c67[m color change mkbhd
+[33m60786ca[m collision fix
+[33mb281331[m fingers fixed
+[33mf282874[m hand collision fix
+[33m4027512[m Merge pull request #9 from ramith123/plugin-for-gazebo
+[33m609b557[m code fix
+[33mc36fe00[m converted plugin to a model plugin
+[33m89c4d03[m added thread to keep topic active
+[33mb7ea1dc[m Merge branch 'plugin-for-gazebo' of https://github.com/ramith123/Project-Interstellar into plugin-for-gazebo
+[33m1dc18a2[m cleaned up code a bit
+[33m111af8b[m cleaned up code a bit
+[33m061d0d7[m Working on cartesion path for robot movement
+[33m0353cbd[m Succesffuly moved the robot using the Move Group Python Interface
+[33m327d1bb[m Merge branch 'main' into basic-robot-control
+[33m3513283[m Merge pull request #8 from ramith123/gazebo-fix
+[33m56298ee[m Merge pull request #7 from ramith123/demo-workspace
+[33m18f264e[m Working on python node for robot movement
+[33m307c4bb[m[33m ([m[1;31morigin/gazebo-fix[m[33m)[m gazebo fix completed with all controls working
+[33m2bd11e3[m added gazebo plugiin for mimicjoints
+[33m9171f49[m finger1 moves
+[33mf46e154[m syntax fix
+[33m5c700a0[m arm_controller working on gzebo but not the hand controller
+[33m21c0d9a[m Merge branch 'demo-workspace' into basic-robot-control
+[33m8abb9e8[m Trying to restore environment to work with python node
+[33mdf1b585[m[33m ([m[1;31morigin/demo-workspace[m[33m)[m Merge pull request #6 from ramith123/end-effector-fix
+[33m6a63719[m the finger fix for gazebo (added inertia)
+[33m1ce8eca[m arm changed to panda arm with oveit working
+[33m46d9602[m ros controller issue fixed. but the end effector is not working correctly
+[33mc3b2a04[m updated setup_assistant
+[33m5fea1ca[m end effector model added. (not tested)
+[33mb1098da[m world fix
+[33m8a16d9b[m tool and link setup
+[33m0aed63b[m removed all moveit setup a stuff and rwevert to the old urdf
+[33m8fa77ac[m Merge pull request #5 from ramith123/gazebo-plugin
+[33ma8c00d2[m added test_world
+[33meb8c6ea[m Merge pull request #3 from ramith123/gazebo-fix
+[33m0b18e6c[m Merge pull request #4 from ramith123/gazebo-plugin
+[33mae82ecc[m movement fix for rviz..
+[33m73b1dd4[m minor fixes
+[33m476cbf6[m publishes cube poses to /location
+[33m6d10e3e[m Node interacting with robot successfully
+[33m670c147[m Merge pull request #2 from ramith123/gazebo-fix
+[33m1eabbd8[m[33m ([m[1;31morigin/gazebo-plugin[m[33m)[m Merge branch 'gazebo-plugin' of https://github.com/ramith123/Project-Interstellar into gazebo-plugin
+[33m6d65e30[m outputs location of only cubes
+[33mae1ce3f[m no clue where i left off... but moeit and gazebo is communicating through the controller, just not properly
+[33mc64e55d[m[33m ([m[1;31morigin/gazebo-meduim-fix[m[33m)[m meduim fix applied (not working)
+[33m3f85548[m fixed the joints but controllers still broken on gazebo
+[33mb255e6b[m Update README.md
+[33mbfdc7d9[m retrieve models info
+[33m6f4fc4d[m base fixed to the world 0 0 0
+[33mb6a2c8e[m Merge pull request #1 from ramith123/Ramith's-workspace
+[33m7fcab8e[m readme page for the demo
+[33m0e7e796[m init commit
+[33m2caa419[m gitignore file added
+[33m37da528[m Initial commit

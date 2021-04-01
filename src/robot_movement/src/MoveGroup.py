@@ -38,7 +38,7 @@ class MoveGroup():
     def move_via_joint_values(self, new_joint_states=[]):
         current_joint_state = self.meca_group.get_current_joint_values()
         for i, current_joint_value in enumerate(new_joint_states):
-            if current_joint_value == -1:
+            if current_joint_value == -999:
                 continue
             current_joint_state[i] = current_joint_value
 

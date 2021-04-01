@@ -4,10 +4,12 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /Global Options1
+        - /Status1
         - /MotionPlanning1
-        - /MotionPlanning1/Planned Path1
+        - /InteractiveMarkers1
       Splitter Ratio: 0.7425600290298462
-    Tree Height: 391
+    Tree Height: 126
   - Class: rviz/Help
     Name: Help
   - Class: rviz/Views
@@ -231,11 +233,20 @@ Visualization Manager:
         Show Robot Visual: true
       Value: true
       Velocity_Scaling_Factor: 1
+    - Class: rviz/InteractiveMarkers
+      Enable Transparency: true
+      Enabled: false
+      Name: InteractiveMarkers
+      Show Axes: false
+      Show Descriptions: true
+      Show Visual Aids: false
+      Update Topic: /robot2/rviz_moveit_motion_planning_display/robot_interaction_interactive_marker_topic/update
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: robot2_tf/meca_base_link
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
@@ -246,31 +257,31 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Class: rviz/XYOrbit
-      Distance: 1.7942882776260376
+      Class: rviz/Orbit
+      Distance: 0.9581414461135864
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.237554669380188
-        Y: 0.1284203976392746
-        Z: 2.2351800055275817e-7
-      Focal Shape Fixed Size: true
+        X: 0.16753903031349182
+        Y: -0.015884103253483772
+        Z: 0.09097635746002197
+      Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.27979686856269836
+      Pitch: 0.49539846181869507
       Target Frame: robot2_tf/meca_base_link
-      Value: XYOrbit (rviz)
-      Yaw: 4.924952030181885
+      Value: Orbit (rviz)
+      Yaw: 0.9803981184959412
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1025
+  Height: 759
   Help:
     collapsed: false
   Hide Left Dock: false
@@ -279,9 +290,9 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002a2000003a7fc0200000007fb000000100044006900730070006c006100790073010000003d00000218000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a0056006900650077007300000003b0000000b0000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000025b000001890000017d00ffffff00000495000003a700000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000002a20000029dfc0200000007fb000000100044006900730070006c006100790073010000003d0000010f000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a005600690065007700730000000163000000ac000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c006900640065007200000001a8000000500000001600000016fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000152000001880000017d00ffffff000002c50000029d00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
-  Width: 1853
-  X: 67
-  Y: 27
+  Width: 1389
+  X: 476
+  Y: 291

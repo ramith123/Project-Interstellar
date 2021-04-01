@@ -13,13 +13,13 @@
       <uri>model://box1</uri>
       <name>box1</name>
 
-      <pose>0.290279 -0.048232 0.03 0 0 0</pose>
+      <pose>-0.476627 0 0.03 0 0 0</pose>
 
     </include>
 
     <include>
       <uri>model://bin_model</uri>
-      <pose>0.3478 0 0.01 0 0 1.5708</pose>
+      <pose>-0.477146 0 0.01 0 0 1.5708</pose>
     </include>
 
     <!-- <include>

@@ -6,9 +6,9 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /Grid1
         - /MotionPlanning1
         - /InteractiveMarkers1
-        - /InteractiveMarkers1/Status1
       Splitter Ratio: 0.7425600290298462
     Tree Height: 391
   - Class: rviz/Help
@@ -247,7 +247,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: robot1_tf/world
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
@@ -259,25 +259,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 0.9292197823524475
+      Distance: 1.8031864166259766
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.3959568738937378
-        Y: -0.034161701798439026
+        X: -0.2746303677558899
+        Y: 0.21180719137191772
         Z: 3.427272758926847e-7
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.40479668974876404
+      Pitch: 0.2347966879606247
       Target Frame: robot1_tf/meca_base_link
       Value: XYOrbit (rviz)
-      Yaw: 5.47495174407959
+      Yaw: 5.534951686859131
     Saved: ~
 Window Geometry:
   Displays:

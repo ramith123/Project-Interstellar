@@ -72,7 +72,7 @@
         <parent link="meca_base_link" />
         <child link="meca_axis_1_link" />
         <axis xyz="0 0 1" />
-        <limit effort="100.0" lower="-3.14141812" upper="3.14141812" velocity="2.61799" />
+        <limit effort="10.0" lower="-3.14141812" upper="3.14141812" velocity="2.61799" />
     </joint>
     <!-- Joint 2 -->
     <link name="meca_axis_2_link">
@@ -100,7 +100,7 @@
         <parent link="meca_axis_1_link" />
         <child link="meca_axis_2_link" />
         <axis xyz="0 1 0" />
-        <limit effort="100.0" lower="-1.22173048" upper="1.5708" velocity="2.61799" />
+        <limit effort="10.0" lower="-1.22173048" upper="1.5708" velocity="2.61799" />
     </joint>
     <!-- Joint 3 -->
     <link name="meca_axis_3_link">
@@ -128,7 +128,7 @@
         <parent link="meca_axis_2_link" />
         <child link="meca_axis_3_link" />
         <axis xyz="0 1 0" />
-        <limit effort="100.0" lower="-2.35619" upper="1.22173048" velocity="3.14159" />
+        <limit effort="10.0" lower="-2.35619" upper="1.22173048" velocity="3.14159" />
     </joint>
     <!-- Joint 4 -->
     <link name="meca_axis_4_link">
@@ -156,7 +156,7 @@
         <parent link="meca_axis_3_link" />
         <child link="meca_axis_4_link" />
         <axis xyz="1 0 0" />
-        <limit effort="100.0" lower="-2.96706" upper="2.96706" velocity="5.23599" />
+        <limit effort="10.0" lower="-2.96706" upper="2.96706" velocity="5.23599" />
     </joint>
     <!-- Joint 5 -->
     <link name="meca_axis_5_link">
@@ -184,7 +184,7 @@
         <parent link="meca_axis_4_link" />
         <child link="meca_axis_5_link" />
         <axis xyz="0 1 0" />
-        <limit effort="100.0" lower="-2.00713" upper="2.00713" velocity="5.23599" />
+        <limit effort="10.0" lower="-2.00713" upper="2.00713" velocity="5.23599" />
     </joint>
     <!-- Joint 6 -->
     <link name="meca_axis_6_link">
@@ -212,7 +212,7 @@
         <parent link="meca_axis_5_link" />
         <child link="meca_axis_6_link" />
         <axis xyz="1 0 0" />
-        <limit effort="100.0" lower="-3.14159" upper="3.14159" velocity="8.72665" />
+        <limit effort="10.0" lower="-3.14159" upper="3.14159" velocity="8.72665" />
     </joint>
     <!-- <link name="meca_axis_flange" /> -->
     <!-- <joint name="meca_axis_joint_7-flange" type="fixed">

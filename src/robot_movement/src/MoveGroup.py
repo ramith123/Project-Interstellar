@@ -15,6 +15,7 @@ class MoveGroup():
         # to one group of joints.  In this case the group refers to the joints of
         # the meca_arm.
         self.meca_group = moveit_commander.MoveGroupCommander(move_group_name)
+        self.meca_group.set_planner_id('RRTkConfigDefault')
 
         # Action clients to the ExecuteTrajectory action server
         self.meca_client = actionlib.SimpleActionClient('execute_trajectory',
@@ -42,14 +43,16 @@ class MoveGroup():
                 continue
             current_joint_state[i] = current_joint_value
 
-         # Move to the specified joint goal
+        # Move to the specified joint goal
         self.meca_group.go(current_joint_state, wait=True)
-
         # ensures that there is no residual movement
         self.meca_group.stop()
 
     def move_to_home(self):
 
+         # Ensure that the server is ready to receive request
+        self.meca_client.wait_for_server()
+        
         # Set a named joint configuration as the goal to plan for a move group.
         # Named joint configurations are the robot poses defined via MoveIt! Setup Assistant.
         self.meca_group.set_named_target("home pose")
@@ -104,7 +107,7 @@ class MoveGroup():
         # translation.  We will specify the jump threshold as 0.0, effectively
         # disabling it.
         fraction = 0.0
-        for count_cartesian_path in range(0, 3):
+        for count_cartesian_path in range(0, 10):
             if fraction < 1.0:
                 (plan_cartesian, fraction) = self.meca_group.compute_cartesian_path(
                     waypoints,   # waypoints to follow
@@ -116,6 +119,8 @@ class MoveGroup():
 
         meca_goal = moveit_msgs.msg.ExecuteTrajectoryGoal()
         meca_goal.trajectory = plan_cartesian
+        # Ensure that the server is ready to receive request
+        self.meca_client.wait_for_server()
         self.meca_client.send_goal(meca_goal)
         self.meca_client.wait_for_result()
 
@@ -161,7 +166,7 @@ class MoveGroup():
         # translation.  We will specify the jump threshold as 0.0, effectively
         # disabling it.
         fraction = 0.0
-        for count_cartesian_path in range(0, 3):
+        for count_cartesian_path in range(0, 10):
             if fraction < 1.0:
                 (plan_cartesian, fraction) = self.meca_group.compute_cartesian_path(
                     waypoints,   # waypoints to follow
@@ -173,6 +178,8 @@ class MoveGroup():
 
         meca_goal = moveit_msgs.msg.ExecuteTrajectoryGoal()
         meca_goal.trajectory = plan_cartesian
+        # Ensure that the server is ready to receive request
+        self.meca_client.wait_for_server()
         self.meca_client.send_goal(meca_goal)
         self.meca_client.wait_for_result()
 

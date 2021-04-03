@@ -26,7 +26,7 @@ def mecademic_robot_basic_movement():
     meca_arm_group.move_to_home()
 
     # Ensure that the robot fingers are opened to pick up cube
-    meca_fingers_group.move_via_joint_values([0.040, -1])
+    meca_fingers_group.move_via_joint_values([0.040, 0.040])
 
 
     # Ensure that the robot fingers are opened to pick up cube
@@ -37,24 +37,10 @@ def mecademic_robot_basic_movement():
     meca_arm_group.relative_cartesian_movement([-.1, -999, -.4])
 
     # Close the mecademic robot fingers to pick cube up.
-    meca_fingers_group.move_via_joint_values([0.00, -1])
+    meca_fingers_group.move_via_joint_values([0.00, 0.00])
 
     # Place the robot to its home position to begin place movement
     meca_arm_group.move_to_home()
-
-    # # Rotate the robot 90%
-    # meca_arm_group.move_via_joint_values([1.5708])
-
-    # # Perform the pre-place movement
-    # meca_arm_group.relative_cartesian_movement([-999, 0.05, -0.4])
-
-    # # Open the mecademic robot fingers to place cube.
-    # meca_fingers_group.move_via_joint_values([0.040, -1])
-
-    # # move robot up a bit to clear the cube
-    # meca_arm_group.relative_cartesian_movement([-999, 0, 0.25])
-
-    # meca_arm_group.move_to_home()
 
     # When finished shut down moveit_commander.
     moveit_commander.roscpp_shutdown()

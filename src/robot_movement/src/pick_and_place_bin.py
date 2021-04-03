@@ -5,6 +5,7 @@ import sys
 import rospy
 import moveit_commander
 from MoveGroup import MoveGroup
+from std_msgs.msg import String
 
 def mecademic_robot_basic_movement():
     # First initialize moveit_commander and rospy to interact with the MoveIt node and facilitate communication within the ros env
@@ -29,7 +30,7 @@ def mecademic_robot_basic_movement():
     meca_fingers_group.move_via_joint_values([0.040, 0.040])
 
 
-    # Ensure that the robot fingers are opened to pick up cube
+    # rotate the robot 179 degrees
     meca_arm_group.move_via_joint_values([-3.12414])
 
 
@@ -39,9 +40,21 @@ def mecademic_robot_basic_movement():
     # Close the mecademic robot fingers to pick cube up.
     meca_fingers_group.move_via_joint_values([0.00, 0.00])
 
+    meca_arm_group.relative_cartesian_movement([.1, -999, .4])
+
     # Place the robot to its home position to begin place movement
     meca_arm_group.move_to_home()
+    meca_arm_group.relative_cartesian_movement([-.1, -999, -.4])
+    meca_fingers_group.move_via_joint_values([0.040, 0.040])
+    meca_arm_group.move_to_home()
 
+
+    pub = rospy.Publisher('state_of_sequence1', String, queue_size=10)
+    rate = rospy.Rate(10) # 10hz
+    while not rospy.is_shutdown():
+        pub.publish("1")
+        rate.sleep()
+       
     # When finished shut down moveit_commander.
     moveit_commander.roscpp_shutdown()
 

@@ -53,11 +53,18 @@ def mecademic_robot_basic_movement():
     moveit_commander.roscpp_initialize(sys.argv)
     rospy.init_node('simple_pick_place', anonymous=True)
 
+    msg = rospy.wait_for_message("/robot1/state_of_sequence1", String)
+    print(msg.data)
+
     # rospy.Subscriber("locations", String, callback)
     msg = rospy.wait_for_message("/locations", String)
 
+
     orignal_cube_location = clean_message(msg)
     new_cube_location = add_offsets(orignal_cube_location)
+    # orignal_cube_location[0][0] += -.8
+    # orignal_cube_location[0][2] += .1
+    
 
     # Instantiate a MoveGroupCommander object.  This object is an interface
     # to one group of joints.  In this case the group refers to the joints of
@@ -73,31 +80,34 @@ def mecademic_robot_basic_movement():
     meca_arm_group.move_to_home()
 
     # Ensure that the robot fingers are opened to pick up cube
-    meca_fingers_group.move_via_joint_values([0.040, -1])
+    meca_fingers_group.move_via_joint_values([0.040, 0.040])
+
+    
+    meca_arm_group.move_via_joint_values([-3.12414])
 
     # Cartesian path movement to pre grasp position
     meca_arm_group.absolute_cartesian_movement(
         orignal_cube_location[0], orignal_cube_location[1])
 
     # Close the mecademic robot fingers to pick cube up.
-    meca_fingers_group.move_via_joint_values([0.00, -1])
+    meca_fingers_group.move_via_joint_values([0.00, 0.00])
 
     # Place the robot to its home position to begin place movement
     meca_arm_group.move_to_home()
 
-    # Rotate the robot 90%
-    meca_arm_group.move_via_joint_values([1.5708])
+    # # Rotate the robot 90%
+    # meca_arm_group.move_via_joint_values([1.5708])
 
-    # Perform the pre-place movement
-    meca_arm_group.relative_cartesian_movement([-999, 0.05, -0.4])
+    # # Perform the pre-place movement
+    # meca_arm_group.relative_cartesian_movement([-999, 0.05, -0.4])
 
-    # Open the mecademic robot fingers to place cube.
-    meca_fingers_group.move_via_joint_values([0.040, -1])
+    # # Open the mecademic robot fingers to place cube.
+    # meca_fingers_group.move_via_joint_values([0.040, -1])
 
-    # move robot up a bit to clear the cube
-    meca_arm_group.relative_cartesian_movement([-999, 0, 0.25])
+    # # move robot up a bit to clear the cube
+    # meca_arm_group.relative_cartesian_movement([-999, 0, 0.25])
 
-    meca_arm_group.move_to_home()
+    # meca_arm_group.move_to_home()
 
     # When finished shut down moveit_commander.
     moveit_commander.roscpp_shutdown()

@@ -15,7 +15,8 @@ class MoveGroup():
         # to one group of joints.  In this case the group refers to the joints of
         # the meca_arm.
         self.meca_group = moveit_commander.MoveGroupCommander(move_group_name)
-        self.meca_group.set_planner_id('BMFT')
+        # self.meca_group.set_planner_id('BMFT')
+        self.meca_group.set_planner_id('RRTstar')
 
         # Action clients to the ExecuteTrajectory action server
         self.meca_client = actionlib.SimpleActionClient('execute_trajectory',

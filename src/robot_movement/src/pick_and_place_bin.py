@@ -44,9 +44,9 @@ def mecademic_robot_basic_movement():
 
     # Place the robot to its home position to begin place movement
     meca_arm_group.move_to_home()
-    meca_arm_group.relative_cartesian_movement([-.1, -999, -.4])
-    meca_fingers_group.move_via_joint_values([0.040, 0.040])
-    meca_arm_group.move_to_home()
+    # meca_arm_group.relative_cartesian_movement([-.1, -999, -.4])
+    # meca_fingers_group.move_via_joint_values([0.040, 0.040])
+    # meca_arm_group.move_to_home()
 
 
     pub = rospy.Publisher('state_of_sequence1', String, queue_size=10)

@@ -4,6 +4,7 @@ import rospkg
 import sys
 import copy
 import os
+os.environ["ROS_NAMESPACE"] = "/robot2"
 import numpy
 import math
 
@@ -49,82 +50,67 @@ class Pick_Place:
     def __init__ (self):
         self.scene = PlanningSceneInterface()
         self.robot = RobotCommander()
-
-        filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'joints_setup.yaml')
-        with open(filename) as file:
-            joints_setup = yaml.load(file)
-            jointslimit = joints_setup["joints_limit"]
-
-            home_value = joints_setup["home_value"]
-            j1 = home_value["joint_1"]
-            j2 = home_value["joint_2"]
-            j3 = home_value["joint_3"]
-            j4 = home_value["joint_4"]
-            j5 = home_value["joint_5"]
-            j6 = home_value["joint_6"]
-            g = home_value["gripper"]
-            self.set_home_value([j1, j2, j3, j4, j5, j6, g])
+        
+        j1 = 0
+        j2 = 0
+        j3 = 0
+        j4 = 0
+        j5 = 0
+        j6 = 0
+        g = 0
+        self.set_home_value([j1, j2, j3, j4, j5, j6, g])
 
         self.object_list = {}
-        filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'interfaces', 'models_info.yaml')
-        with open(filename) as file:
-            objects_info = yaml.load(file)
-            robot_x = objects_info["robot"]["pose"]["x"]
-            robot_y = objects_info["robot"]["pose"]["y"]
-            robot_z = objects_info["robot"]["pose"]["z"]
-            robot_roll = objects_info["robot"]["pose"]["roll"]
-            robot_pitch = objects_info["robot"]["pose"]["pitch"]
-            robot_yaw = objects_info["robot"]["pose"]["yaw"]
+        # filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'interfaces', 'models_info.yaml')
+        # with open(filename) as file:
+            # objects_info = yaml.load(file)
+        robot_x = 0
+        robot_y = 0
+        robot_z = 0
+        robot_roll = 0
+        robot_pitch = 0
+        robot_yaw = 0
 
-            rospy.loginfo("Spawning Objects in Gazebo and planning scene")
-            objects = objects_info["objects"]
-            objects_name = objects.keys()
-            for object_name in objects_name:
-                name = object_name
-                shape = objects[name]["shape"]
-                color = objects[name]["color"]
+        rospy.loginfo("Spawning Objects in Gazebo and planning scene")
+        # objects = objects_info["objects"]
+        # objects_name = objects.keys()
+        
+        name = "box1"
+        shape = "box"
+        color = "green"
 
-                x = objects[name]["pose"]["x"]
-                y = objects[name]["pose"]["y"]
-                z = objects[name]["pose"]["z"]
-                roll = objects[name]["pose"]["roll"]
-                pitch = objects[name]["pose"]["pitch"]
-                yaw = objects[name]["pose"]["yaw"]
-                object_pose = self.pose2msg(x, y, z, roll, pitch, yaw)
+        #TODO: GET CUBE POSITION
+        x = 0
+        y = 1
+        z = 0
+        roll = 0
+        pitch = 0
+        yaw = 0
+        object_pose = self.pose2msg(x, y, z, roll, pitch, yaw)
 
-                p = PoseStamped()
-                p.header.frame_id = self.robot.get_planning_frame()
-                p.header.stamp = rospy.Time.now()
+        p = PoseStamped()
+        p.header.frame_id = self.robot.get_planning_frame()
+        p.header.stamp = rospy.Time.now()
 
-                p.pose.position.x = x - robot_x
-                p.pose.position.y = y - robot_y
-                p.pose.position.z = z - robot_z
+        p.pose.position.x = x - robot_x
+        p.pose.position.y = y - robot_y
+        p.pose.position.z = z - robot_z
 
-                q = quaternion_from_euler(roll,pitch,yaw)
-                p.pose.orientation = Quaternion(*q)
+        q = quaternion_from_euler(roll,pitch,yaw)
+        p.pose.orientation = Quaternion(*q)
 
-                if shape == "box":
-                    x = objects[name]["size"]["x"]
-                    y = objects[name]["size"]["y"]
-                    z = objects[name]["size"]["z"]
-                    p.pose.position.z += z/2
+        # TODO: size of box
+        x = 1
+        y = 1
+        z = 1
+        p.pose.position.z += z/2
 
-                    height = z
-                    width = y
-                    length = x
-                    self.object_list[name] = Object(p.pose, object_pose, height, width, length, shape, color)
+        height = z
+        width = y
+        length = x
+        self.object_list[name] = Object(p.pose, object_pose, height, width, length, shape, color)
 
-                elif shape == "cylinder":
-                    height = objects[name]["size"]["height"]
-                    radius = objects[name]["size"]["radius"]
-                    p.pose.position.z += height/2
-                    self.object_list[name] = Object(p.pose, object_pose, height, radius*2, radius*2, shape, color)
-
-                elif shape == "sphere":
-                    radius = objects[name]["size"]
-                    p.pose.position.z += radius
-                    self.object_list[name] = Object(p.pose, object_pose, radius*2, radius*2, radius*2, shape, color)
-
+        
         # self.object_list = object_list
         self.goal_list = {}
         self.set_target_info()
@@ -132,8 +118,8 @@ class Pick_Place:
         self.gripper_width = {}
         self.set_gripper_width_relationship()
 
-        self.arm = moveit_commander.MoveGroupCommander("irb_120")
-        self.gripper = moveit_commander.MoveGroupCommander("robotiq_85")
+        self.arm = moveit_commander.MoveGroupCommander("meca_arm")
+        self.gripper = moveit_commander.MoveGroupCommander("hand")
 
         self.arm.set_goal_tolerance(0.01)
 
@@ -156,35 +142,33 @@ class Pick_Place:
         msg.data = value
         self.updatepose_pub.publish(msg)
 
-    def clean_scene(self, object_name):
-        self.scene.remove_world_object(object_name)
+    # def clean_scene(self, object_name):
+    #     self.scene.remove_world_object(object_name)
 
     def set_target_info(self):
-        filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'interfaces', 'models_info.yaml')
-        with open(filename) as file:
-            objects_info = yaml.load(file)
-            robot_x = objects_info["robot"]["pose"]["x"]
-            robot_y = objects_info["robot"]["pose"]["y"]
-            robot_z = objects_info["robot"]["pose"]["z"]
-
-            targets = objects_info["targets"]
-            target_name = targets.keys()
-            for name in target_name:
-                position = Point()
-                position.x = targets[name]["x"] - robot_x
-                position.y = targets[name]["y"] - robot_y
-                position.z = targets[name]["z"] - robot_z
-                self.goal_list[name] = position
+        # filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'interfaces', 'models_info.yaml')
+        # with open(filename) as file:
+            # objects_info = yaml.load(file)
+        robot_x = 0
+        robot_y = 0
+        robot_z = 0
+            # TODO: Where to put the cube
+            # targets = objects_info["targets"]
+            # target_name = targets.keys()
+        name="storage"
+        position = Point()
+        position.x = 0.2 - robot_x
+        position.y = 0.2 - robot_y
+        position.z = 0 - robot_z
+        self.goal_list[name] = position
 
     def set_gripper_width_relationship(self):
-        filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'interfaces', 'models_info.yaml')
-        with open(filename) as file:
-            objects_info = yaml.load(file)
-            gripper_joint_value = objects_info["gripper_joint_value"]
-
-            objects_width = gripper_joint_value.keys()
-            for object_width in objects_width:
-                self.gripper_width[object_width] = gripper_joint_value[object_width]
+        # filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'interfaces', 'models_info.yaml')
+        # with open(filename) as file:
+        #     objects_info = yaml.load(file)
+        #     gripper_joint_value = objects_info["gripper_joint_value"]
+        # TODO: GRIPPER WIDTH FROM BOX WIDTH
+        self.gripper_width[1] = 0.04
 
     def get_object_list(self):
         return self.object_list.keys()
@@ -265,18 +249,18 @@ class Pick_Place:
         return roll, pitch, yaw, x, y, z 
 
     def get_workspace(self):
-        filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'joints_setup.yaml')
-        with open(filename) as file:
-            joints_setup = yaml.load(file)
-            workspace = joints_setup["workspace"]
+        # filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'joints_setup.yaml')
+        # with open(filename) as file:
+        #     joints_setup = yaml.load(file)
+        #     workspace = joints_setup["workspace"]
 
-            x = workspace["center"]["x"]
-            y = workspace["center"]["y"]
-            z = workspace["center"]["z"]
-            min_r = workspace["r"]["min"]
-            max_r = workspace["r"]["max"]
-            min_z = workspace["min_z"]
-            self.workspace = WorkSpace(x, y, z, min_r, max_r, min_z)
+        x = 0
+        y = 0
+        z = 0
+        min_r = 0.168
+        max_r = 0.580
+        min_z = -0.112
+        self.workspace = WorkSpace(x, y, z, min_r, max_r, min_z)
 
     # check if the position is inside workspace
     def is_inside_workspace(self, x, y, z):

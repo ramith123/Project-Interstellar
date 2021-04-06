@@ -15,7 +15,6 @@ class MoveGroup():
         # to one group of joints.  In this case the group refers to the joints of
         # the meca_arm.
         self.meca_group = moveit_commander.MoveGroupCommander(move_group_name)
-        # self.meca_group.set_planner_id('BMFT')
         self.meca_group.set_planner_id('RRTstar')
 
         # Action clients to the ExecuteTrajectory action server
@@ -58,7 +57,7 @@ class MoveGroup():
         # Named joint configurations are the robot poses defined via MoveIt! Setup Assistant.
         self.meca_group.set_named_target("home pose")
 
-        # Plan to the desired joint-space goal using the default planner (RRTConnect).
+        # Plan to the desired joint-space goal using the  planner (RRTstar)
         meca_home = self.meca_group.plan()
         # Create a goal message object for the action server.
         meca_goal = moveit_msgs.msg.ExecuteTrajectoryGoal()

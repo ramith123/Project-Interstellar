@@ -13,17 +13,13 @@ def mecademic_robot_basic_movement():
     rospy.init_node('simple_pick_place', anonymous=True)
 
 
-    # Instantiate a MoveGroupCommander object.  This object is an interface
-    # to one group of joints.  In this case the group refers to the joints of
-    # the meca_arm.
+    # Instantiate a MoveGroupCommander object. 
     meca_arm_group = MoveGroup("meca_arm")
 
     # MoveGroup Commander Object for the mecademic hand.
     meca_fingers_group = MoveGroup("hand")
 
     # Ensure that the robot begins at its home position
-    # Set a named joint configuration as the goal to plan for a move group.
-    # Named joint configurations are the robot poses defined via MoveIt! Setup Assistant.
     meca_arm_group.move_to_home()
 
     # Ensure that the robot fingers are opened to pick up cube
@@ -40,19 +36,19 @@ def mecademic_robot_basic_movement():
     # Close the mecademic robot fingers to pick cube up.
     meca_fingers_group.move_via_joint_values([0.00, 0.00])
 
+    # Lift the EEF upwards to ensure that the bin does not drag on the ground
     meca_arm_group.relative_cartesian_movement([.1, -999, .4])
 
-    # Place the robot to its home position to begin place movement
+    # Place the robot to its home position
     meca_arm_group.move_to_home()
-    # meca_arm_group.relative_cartesian_movement([-.1, -999, -.4])
-    # meca_fingers_group.move_via_joint_values([0.040, 0.040])
-    # meca_arm_group.move_to_home()
 
-
+    # Initiate topic to publish messages
     pub = rospy.Publisher('state_of_sequence1', String, queue_size=10)
+    # Set rate at which the message will be published
     rate = rospy.Rate(10) # 10hz
     while not rospy.is_shutdown():
-        pub.publish("1")
+        # publish message 
+        pub.publish("1") 
         rate.sleep()
        
     # When finished shut down moveit_commander.

@@ -53,17 +53,16 @@ def mecademic_robot_basic_movement():
     moveit_commander.roscpp_initialize(sys.argv)
     rospy.init_node('simple_pick_place', anonymous=True)
 
+    # Used to listen for node 1 completion state
     msg = rospy.wait_for_message("/robot1/state_of_sequence1", String)
     print(msg.data)
 
-    # rospy.Subscriber("locations", String, callback)
+    # Used to receive cube location from the gazebo environment
     msg = rospy.wait_for_message("/locations", String)
 
 
     orignal_cube_location = clean_message(msg)
     new_cube_location = add_offsets(orignal_cube_location)
-    # orignal_cube_location[0][0] += -.8
-    # orignal_cube_location[0][2] += .1
     
 
     # Instantiate a MoveGroupCommander object.  This object is an interface
@@ -75,21 +74,16 @@ def mecademic_robot_basic_movement():
     meca_fingers_group = MoveGroup("hand")
 
     # Ensure that the robot begins at its home position
-    # Set a named joint configuration as the goal to plan for a move group.
-    # Named joint configurations are the robot poses defined via MoveIt! Setup Assistant.
     meca_arm_group.move_to_home()
 
     # Ensure that the robot fingers are opened to pick up cube
     meca_fingers_group.move_via_joint_values([0.040, 0.040])
 
-    
+    # rotate 179.9 degrees using radians 
     meca_arm_group.move_via_joint_values([-3.10669])
 
+    # move to pre-grasp position 
     meca_arm_group.relative_cartesian_movement([-.12, -999, -.05])
-
-    # # Cartesian path movement to pre grasp position
-    # meca_arm_group.absolute_cartesian_movement(
-    #     orignal_cube_location[0], orignal_cube_location[1])
 
     # Close the mecademic robot fingers to pick cube up.
     meca_fingers_group.move_via_joint_values([0.00, 0.00])

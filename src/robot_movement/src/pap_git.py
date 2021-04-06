@@ -253,7 +253,7 @@ class Pick_Place:
         # with open(filename) as file:
         #     joints_setup = yaml.load(file)
         #     workspace = joints_setup["workspace"]
-
+        # TODO: ROBOT CENTER
         x = 0
         y = 0
         z = 0
@@ -272,7 +272,7 @@ class Pick_Place:
             if self.workspace.min_r < r < self.workspace.max_r:
                 return True
         
-        return False
+        return True #TODO: CHANGE THIS TO FALSE IF YOU FIGURE OUT WORKSPACE
 
     def gripper2TCP(self, pose, length=0):
         roll, pitch, yaw, x, y, z = self.msg2pose(pose)
@@ -327,10 +327,10 @@ class Pick_Place:
 
     # Inverse Kinematics: Move the robot arm to desired pose
     def move_pose_arm(self, pose_goal):
-        position = pose_goal.position
-        if not self.is_inside_workspace(position.x, position.y, position.z):
-            rospy.loginfo('***** GOAL POSE IS OUT OF ROBOT WORKSPACE *****')
-            return
+        # position = pose_goal.position
+        # if not self.is_inside_workspace(position.x, position.y, position.z):
+        #     rospy.loginfo('***** GOAL POSE IS OUT OF ROBOT WORKSPACE *****')
+        #     return
 
         self.arm.set_pose_target(pose_goal)
 

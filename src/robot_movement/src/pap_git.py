@@ -343,7 +343,7 @@ class Pick_Place:
     # Move the Robotiq gripper by master axis
     def move_joint_hand(self,gripper_finger1_joint):
         joint_goal = self.gripper.get_current_joint_values()
-        joint_goal[2] = gripper_finger1_joint # Gripper master axis
+        joint_goal[1] = gripper_finger1_joint # Gripper master axis
 
         self.gripper.go(joint_goal, wait=True)
         self.gripper.stop() # To guarantee no residual movement

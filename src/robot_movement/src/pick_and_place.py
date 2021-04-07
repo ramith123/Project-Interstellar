@@ -82,7 +82,7 @@ def mecademic_robot_basic_movement():
     cube_locations['box2']['position2'] = [-0.3, 0.05, -0.6]
     cube_locations['box1']['position3'] = [-999, 0, 0.25]
     cube_locations['box2']['position3'] = [0, 0, 0.5]
-    boxes = ['box', 'box2']
+    boxes = ['box1', 'box2']
 
 
 
@@ -131,6 +131,10 @@ def mecademic_robot_basic_movement():
 
         # Ensure that the robot fingers are opened to pick up cube
         meca_fingers_group.move_via_joint_values([0.040, -1])
+
+        if box == 'box2':
+            # move robot over the cube
+            meca_arm_group.relative_cartesian_movement([-.02, 0, 0])
 
         # Cartesian path movement to pre grasp position
         meca_arm_group.relative_cartesian_movement(cube_locations[box]['position2'])

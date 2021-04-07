@@ -1,0 +1,97 @@
+id: ''
+pre_grasp_posture: 
+  header: 
+    seq: 0
+    stamp: 
+      secs: 0
+      nsecs:         0
+    frame_id: ''
+  joint_names: [meca_finger_joint1]
+  points: 
+    - 
+      positions: [0.0]
+      velocities: []
+      accelerations: []
+      effort: []
+      time_from_start: 
+        secs: 0
+        nsecs: 500000000
+grasp_posture: 
+  header: 
+    seq: 0
+    stamp: 
+      secs: 0
+      nsecs:         0
+    frame_id: ''
+  joint_names: [meca_finger_joint1]
+  points: 
+    - 
+      positions: [0.04]
+      velocities: []
+      accelerations: []
+      effort: []
+      time_from_start: 
+        secs: 5
+        nsecs:         0
+grasp_pose: 
+  header: 
+    seq: 0
+    stamp: 
+      secs: 0
+      nsecs:         0
+    frame_id: "robot1/meca_base_link"
+  pose: 
+    position: 
+      x: 0.193586
+      y: 0.0
+      z: 0.009648
+    orientation: 
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+grasp_quality: 0.0
+pre_grasp_approach: 
+  direction: 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: "robot1/meca_base_link"
+    vector: 
+      x: 0
+      y: 0
+      z: 0
+  desired_distance: 0.2
+  min_distance: 0.1
+post_grasp_retreat: 
+  direction: 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: "robot1/meca_base_link"
+    vector: 
+      x: 0
+      y: 0
+      z: 0
+  desired_distance: 0.2
+  min_distance: 0.1
+post_place_retreat: 
+  direction: 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: ''
+    vector: 
+      x: 0.0
+      y: 0.0
+      z: 0.0
+  desired_distance: 0.0
+  min_distance: 0.0
+max_contact_force: 1000
+allowed_touch_objects: []

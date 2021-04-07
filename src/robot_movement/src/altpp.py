@@ -71,7 +71,7 @@ if __name__ == '__main__':
         pp.pickup(object_name, [grasp])
         pp.clean_scene(object_name)
         place_position = pp.get_target_position(target_name)
-        pp.place(orientation_tar, place_position,roll = 30)
+        pp.place(orientation_tar, place_position,yaw = -90)
 
     pickup_and_drop_seq("box1","storage","horizontal","vertical")
     # pp.move_pose_arm(grasp.grasp_pose.pose)

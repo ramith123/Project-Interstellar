@@ -61,17 +61,19 @@ if __name__ == '__main__':
     def pickup_and_drop_seq(object_name,target_name,orientation_obj,orientation_tar):
         boxPose = pp.get_object_p(object_name)
         pp.scene.add_box(object_name, boxPose,(0.01,0.01,0.01))
-        
-        grasp = pp.generate_grasp(object_name, orientation_obj, boxPose.pose.position,pitch=30, length=VLENGTH)
+        if (orientation_obj == "horizontal"):
+            grasp = pp.generate_grasp(object_name, orientation_obj, boxPose.pose.position,pitch=30, length=VLENGTH)
+        elif (orientation_obj == "vertical"):
+            grasp = pp.generate_grasp(object_name, orientation_obj, boxPose.pose.position, length=VLENGTH)
+        else:
+            return
         print(grasp)
-        rospy.sleep(5)
         pp.pickup(object_name, [grasp])
         pp.clean_scene(object_name)
         place_position = pp.get_target_position(target_name)
-        pp.place(orientation_tar, place_position)
+        pp.place(orientation_tar, place_position,roll = 30)
 
-
-
+    pickup_and_drop_seq("box1","storage","horizontal","vertical")
     # pp.move_pose_arm(grasp.grasp_pose.pose)
     # rospy.sleep(2)
     # pp.move_joint_hand(0)

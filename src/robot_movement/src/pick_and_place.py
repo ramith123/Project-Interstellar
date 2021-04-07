@@ -82,7 +82,7 @@ def mecademic_robot_basic_movement():
     cube_locations['box2']['position2'] = [-0.3, 0.05, -0.6]
     cube_locations['box1']['position3'] = [-999, 0, 0.25]
     cube_locations['box2']['position3'] = [0, 0, 0.5]
-    boxes = ['box2']
+    boxes = ['box', 'box2']
 
 
 

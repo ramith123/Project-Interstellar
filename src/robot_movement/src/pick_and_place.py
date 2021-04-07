@@ -16,8 +16,25 @@ def clean_message(message):
     pitch = round(float(positions[5]), 5)
     yaw = round(float(positions[6]), 5)
     w = round(float(positions[7]), 5)
-    print("I heard %f %f %f %f %f %f", x, y, z, roll, pitch, yaw, w)
-    return [[x, y, z], [roll, pitch, yaw, w]]
+    # print("I heard %s %f %f %f %f %f %f", positions[0], x, y, z, roll, pitch, yaw, w)
+    return [positions[0], [x, y, z], [roll, pitch, yaw, w]] 
+
+
+def gather_cube_positions():
+
+    orignal_cube_locations = {}
+    boxes = ['box1', 'box2']
+
+    for box in boxes: 
+        msg = rospy.wait_for_message("/locations", String)
+        cube_location = clean_message(msg)
+        while cube_location[0] != box: 
+            msg = rospy.wait_for_message("/locations", String)
+            cube_location = clean_message(msg)
+        orignal_cube_locations[box] = {'position1':[cube_location[1], cube_location[2]]} 
+
+    return orignal_cube_locations
+
 
 
 def add_offsets(cube_location):
@@ -52,12 +69,6 @@ def mecademic_robot_basic_movement():
     moveit_commander.roscpp_initialize(sys.argv)
     rospy.init_node('simple_pick_place', anonymous=True)
 
-    # rospy.Subscriber("locations", String, callback)
-
-    msg = rospy.wait_for_message("locations", String)
-    orignal_cube_location = clean_message(msg)
-    new_cube_location = add_offsets(orignal_cube_location)
-
     # Instantiate a MoveGroupCommander object.  This object is an interface
     # to one group of joints.  In this case the group refers to the joints of
     # the meca_arm.
@@ -66,37 +77,86 @@ def mecademic_robot_basic_movement():
     # MoveGroup Commander Object for the mecademic hand.
     meca_fingers_group = MoveGroup("hand")
 
-    # Ensure that the robot begins at its home position
-    # Set a named joint configuration as the goal to plan for a move group.
-    # Named joint configurations are the robot poses defined via MoveIt! Setup Assistant.
-    meca_arm_group.move_to_home()
+    cube_locations = gather_cube_positions()
+    cube_locations['box1']['position2'] = [-999, 0.05, -0.4]
+    cube_locations['box2']['position2'] = [-0.3, 0.05, -0.6]
+    cube_locations['box1']['position3'] = [-999, 0, 0.25]
+    cube_locations['box2']['position3'] = [0, 0, 0.5]
+    boxes = ['box2']
 
-    # Ensure that the robot fingers are opened to pick up cube
-    meca_fingers_group.move_via_joint_values([0.040, -1])
 
-    # Cartesian path movement to pre grasp position
-    meca_arm_group.absolute_cartesian_movement(
-        new_cube_location[0], new_cube_location[1])
 
-    # Close the mecademic robot fingers to pick cube up.
-    meca_fingers_group.move_via_joint_values([0.00, -1])
+    # Movement to storage area 
+    for box in boxes: 
 
-    # Place the robot to its home position to begin place movement
-    meca_arm_group.move_to_home()
+        cube_locations[box]['position1'] = add_offsets(cube_locations[box]['position1'])
 
-    # Rotate the robot 90%
-    meca_arm_group.move_via_joint_values([1.5708])
+        # Ensure that the robot begins at its home position
+        # Set a named joint configuration as the goal to plan for a move group.
+        # Named joint configurations are the robot poses defined via MoveIt! Setup Assistant.
+        meca_arm_group.move_to_home()
 
-    # Perform the pre-place movement
-    meca_arm_group.relative_cartesian_movement([-999, 0.05, -0.4])
+        # Ensure that the robot fingers are opened to pick up cube
+        meca_fingers_group.move_via_joint_values([0.040, -1])
 
-    # Open the mecademic robot fingers to place cube.
-    meca_fingers_group.move_via_joint_values([0.040, -1])
+        # Cartesian path movement to pre grasp position
+        meca_arm_group.absolute_cartesian_movement(cube_locations[box]['position1'][0], cube_locations[box]['position1'][1])
 
-    # move robot up a bit to clear the cube
-    meca_arm_group.relative_cartesian_movement([-999, 0, 0.25])
+        # Close the mecademic robot fingers to pick cube up.
+        meca_fingers_group.move_via_joint_values([0.00, -1])
 
-    meca_arm_group.move_to_home()
+        # Place the robot to its home position to begin place movement
+        meca_arm_group.move_to_home()
+
+        # Rotate the robot 90%
+        meca_arm_group.move_via_joint_values([1.5708])
+
+        # Perform the pre-place movement
+        meca_arm_group.relative_cartesian_movement(cube_locations[box]['position2'])
+
+        # Open the mecademic robot fingers to place cube.
+        meca_fingers_group.move_via_joint_values([0.040, -1])
+
+        # move robot up a bit to clear the cube
+        meca_arm_group.relative_cartesian_movement([0, 0 , 0.2])
+
+        meca_arm_group.move_to_home()
+
+    #Movement to bin area 
+
+    for box in boxes: 
+
+        # Rotate the robot 90%
+        meca_arm_group.move_via_joint_values([1.5708])
+
+        # Ensure that the robot fingers are opened to pick up cube
+        meca_fingers_group.move_via_joint_values([0.040, -1])
+
+        # Cartesian path movement to pre grasp position
+        meca_arm_group.relative_cartesian_movement(cube_locations[box]['position2'])
+
+        # Close the mecademic robot fingers to pick cube up.
+        meca_fingers_group.move_via_joint_values([0.00, -1])
+
+        # move robot upwards to avoid hitting cubes below
+        meca_arm_group.relative_cartesian_movement(cube_locations[box]['position3'])
+
+        # Place the robot to its home position to begin place movement
+        meca_arm_group.move_to_home()
+
+        # Perform the pre-place movement
+        meca_arm_group.absolute_cartesian_movement(cube_locations[box]['position1'][0], cube_locations[box]['position1'][1])
+
+        # Open the mecademic robot fingers to place cube.
+        meca_fingers_group.move_via_joint_values([0.040, -1])
+
+        # move robot up a bit to clear the cube
+        meca_arm_group.relative_cartesian_movement([0, 0 , 0.2])
+
+
+        meca_arm_group.move_to_home()
+    
+    
 
     # When finished shut down moveit_commander.
     moveit_commander.roscpp_shutdown()

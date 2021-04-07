@@ -153,22 +153,21 @@ class Pick_Place:
         self.scene.remove_world_object(object_name)
 
     def set_target_info(self):
-        # filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'interfaces', 'models_info.yaml')
-        # with open(filename) as file:
-            # objects_info = yaml.load(file)
-        #TODO: ROBOT INIT POS
+        
         robot_x = 0.0
         robot_y = 0
         robot_z = 0
-            # TODO: Where to put the cube
-            # targets = objects_info["targets"]
-            # target_name = targets.keys()
-        name="storage"
-        position = Point()
-        position.x = 0 - robot_x
-        position.y = -0.174291 - robot_y
-        position.z = 0.15 - robot_z
-        self.goal_list[name] = position
+        filename = os.path.join(rospkg.RosPack().get_path('robot_movement'), 'src', 'targets.yaml')
+        with open(filename) as file:
+            objects_info = yaml.load(file)
+            targets = objects_info["targets"]
+            target_name = targets.keys()
+            for name in target_name:
+                position = Point()
+                position.x = targets[name]["x"] - robot_x
+                position.y = targets[name]["y"] - robot_y
+                position.z = targets[name]["z"] - robot_z
+            self.goal_list[name] = position
 
     def set_gripper_width_relationship(self):
         # filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'interfaces', 'models_info.yaml')

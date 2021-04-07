@@ -67,11 +67,11 @@ if __name__ == '__main__':
     print(grasp)
     rospy.sleep(5)
     pp.pickup(object_name, [grasp])
-    # pp.clean_scene(object_name)
+    pp.clean_scene(object_name)
     
-    # target_name = "storage"
-    # place_position = pp.get_target_position(target_name)
-    # pp.place("vertical", place_position)
+    target_name = "storage"
+    place_position = pp.get_target_position(target_name)
+    pp.place("vertical", place_position)
 
 
     # pp.move_pose_arm(grasp.grasp_pose.pose)

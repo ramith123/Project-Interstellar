@@ -52,6 +52,7 @@ class Pick_Place:
         self.scene = PlanningSceneInterface()
         self.robot = RobotCommander()
         
+        
         j1 = 0
         j2 = 0
         j3 = 0
@@ -124,13 +125,14 @@ class Pick_Place:
 
         self.arm = moveit_commander.MoveGroupCommander("meca_arm")
         self.gripper = moveit_commander.MoveGroupCommander("hand")
+        self.arm.set_planner_id("RRTkConfigDefault")
 
-        self.arm.set_goal_tolerance(0.005)
+        self.arm.set_goal_tolerance(0.009)
         self.arm.allow_replanning(True)
 
         # set default grasp message infos
         self.set_grasp_distance(0.03, 0.1)
-        self.set_grasp_direction(0, 0, -0.5)
+        self.set_grasp_direction(0, 0, -0.3)
 
         self.get_workspace()
 
@@ -164,8 +166,8 @@ class Pick_Place:
         name="storage"
         position = Point()
         position.x = 0 - robot_x
-        position.y = 0 - robot_y
-        position.z = 0 - robot_z
+        position.y = -0.174291 - robot_y
+        position.z = 0.15 - robot_z
         self.goal_list[name] = position
 
     def set_gripper_width_relationship(self):
@@ -464,7 +466,7 @@ class Pick_Place:
         self.clean_scene(object_name)
 
     # place object to goal position
-    def place(self, eef_orientation, position, distance = 0.01, roll = 0, pitch = 0, yaw = 180):
+    def place(self, eef_orientation, position, distance = 0.05, roll = 0, pitch = 0, yaw = 180):
         # if not self.is_inside_workspace(position.x, position.y, position.z):
         #     rospy.loginfo('***** GOAL POSE IS OUT OF ROBOT WORKSPACE *****')
         #     rospy.loginfo('Stop placing')
@@ -501,7 +503,7 @@ class Pick_Place:
         self.updatepose_trigger(True)
 
         # place
-        self.move_joint_hand(0)
+        self.move_joint_hand(0.04)
         rospy.sleep(1)
 
         # move up

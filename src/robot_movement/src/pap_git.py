@@ -1,10 +1,9 @@
+import os
 import rospy
 import rospkg
 
 import sys
 import copy
-import os
-os.environ["ROS_NAMESPACE"] = "/robot2"
 import numpy
 import math
 
@@ -26,7 +25,7 @@ import yaml
 
 
 class Object:
-    def __init__(self, relative_pose, abs_pose, height, width, length, shape, color):
+    def __init__(self, relative_pose, abs_pose, height, width, length, shape, color,p):
         self.relative_pose = relative_pose
         self.abs_pose = abs_pose
         self.height = height
@@ -34,6 +33,7 @@ class Object:
         self.length = length
         self.shape = shape
         self.color = color
+        self.p = p
 
 
 class WorkSpace:
@@ -64,6 +64,7 @@ class Pick_Place:
         # filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'interfaces', 'models_info.yaml')
         # with open(filename) as file:
             # objects_info = yaml.load(file)
+        #TODO: ROBOT INIT POS
         robot_x = 0
         robot_y = 0
         robot_z = 0
@@ -80,15 +81,16 @@ class Pick_Place:
         color = "green"
 
         #TODO: GET CUBE POSITION
-        x = 0
-        y = 1
-        z = 0
+        x = 0.393586
+        y = 0
+        z = 0.009648
         roll = 0
         pitch = 0
         yaw = 0
         object_pose = self.pose2msg(x, y, z, roll, pitch, yaw)
 
         p = PoseStamped()
+
         p.header.frame_id = self.robot.get_planning_frame()
         p.header.stamp = rospy.Time.now()
 
@@ -108,7 +110,7 @@ class Pick_Place:
         height = z
         width = y
         length = x
-        self.object_list[name] = Object(p.pose, object_pose, height, width, length, shape, color)
+        self.object_list[name] = Object(p.pose, object_pose, height, width, length, shape, color,p)
 
         
         # self.object_list = object_list
@@ -142,14 +144,15 @@ class Pick_Place:
         msg.data = value
         self.updatepose_pub.publish(msg)
 
-    # def clean_scene(self, object_name):
-    #     self.scene.remove_world_object(object_name)
+    def clean_scene(self, object_name):
+        self.scene.remove_world_object(object_name)
 
     def set_target_info(self):
         # filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'interfaces', 'models_info.yaml')
         # with open(filename) as file:
             # objects_info = yaml.load(file)
-        robot_x = 0
+        #TODO: ROBOT INIT POS
+        robot_x = 0.0
         robot_y = 0
         robot_z = 0
             # TODO: Where to put the cube
@@ -157,9 +160,9 @@ class Pick_Place:
             # target_name = targets.keys()
         name="storage"
         position = Point()
-        position.x = 0.2 - robot_x
-        position.y = 0.2 - robot_y
-        position.z = 0 - robot_z
+        position.x = 0.797330 - robot_x
+        position.y = -0.288180 - robot_y
+        position.z = 0.009313 - robot_z
         self.goal_list[name] = position
 
     def set_gripper_width_relationship(self):
@@ -178,6 +181,9 @@ class Pick_Place:
 
     def get_object_pose(self, object_name):
         return copy.deepcopy(self.object_list[object_name].relative_pose)
+    
+    def get_object_p(self, object_name):
+        return copy.deepcopy(self.object_list[object_name].p)
 
     def get_object_info(self, object_name):
         this_object = copy.deepcopy(self.object_list[object_name])
@@ -335,7 +341,6 @@ class Pick_Place:
         self.arm.set_pose_target(pose_goal)
 
         self.arm.go(wait=True)
-
         self.arm.stop() # To guarantee no residual movement
         self.arm.clear_pose_targets()
         self.updatepose_trigger(True)

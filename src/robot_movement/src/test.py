@@ -60,10 +60,10 @@ if __name__ == '__main__':
     object_name = "box1"
     boxPose = pp.get_object_p(object_name)
     pp.scene.add_box(object_name, boxPose,(0.01,0.01,0.01))
-    WIDTH = 0
+    
     VLENGTH = 0.112
     LENGTH = 0.104
-    grasp = pp.generate_grasp(object_name, "vertical", boxPose.pose.position, WIDTH, length=VLENGTH)
+    grasp = pp.generate_grasp(object_name, "horizontal", boxPose.pose.position,pitch=30, length=VLENGTH)
     print(grasp)
     rospy.sleep(5)
     pp.pickup(object_name, [grasp])

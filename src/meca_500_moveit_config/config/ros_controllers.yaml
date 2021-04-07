@@ -54,35 +54,35 @@ arm_controller:
     - meca_axis_6_joint
   gains:
     meca_axis_1_joint:
-      p: 1000
+      p: 2000
       d: 10
-      i: 1
-      i_clamp: 1
+      i: 2
+
     meca_axis_2_joint:
-      p: 1000
+      p: 2000
       d: 10
-      i: 1
-      i_clamp: 1
+      i: 2
+
     meca_axis_3_joint:
-      p: 1000
+      p: 2000
       d: 10
-      i: 1
-      i_clamp: 1
+      i: 2
+
     meca_axis_4_joint:
-      p: 1000
+      p: 2000
       d: 10
-      i: 1
-      i_clamp: 1
+      i: 2
+
     meca_axis_5_joint:
-      p: 1000
+      p: 2000
       d: 10
-      i: 1
-      i_clamp: 1
+      i: 2
+
     meca_axis_6_joint:
-      p: 1000
+      p: 2000
       d: 10
-      i: 1
-      i_clamp: 1
+      i: 2
+
 hand_controller:
   type: effort_controllers/JointTrajectoryController
   joints:
@@ -90,11 +90,12 @@ hand_controller:
 
   gains:
     meca_finger_joint1:
-      p: 300
-      d: 1
+      p: 1000
+      d: 10
       i: 1
-
+      i_clamp: 1
     meca_finger_joint2:
-      p: 300
-      d: 1
+      p: 1000
+      d: 10
       i: 1
+      i_clamp: 1

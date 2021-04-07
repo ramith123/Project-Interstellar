@@ -22,11 +22,10 @@ if __name__ == '__main__':
     pp.move_joint_hand(0.04)
     
     
-    object_name = pp.get_object_list()[0]
+    
     # get object pose
     # print(object_name)
-    boxPose = pp.get_object_p(object_name)
-    pp.scene.add_box(object_name, boxPose)
+   
     # print(boxPose)
     # pose = pp.get_object_pose(object_name)
     
@@ -38,16 +37,9 @@ if __name__ == '__main__':
     # print(pp.scene.get_objects())
     # generate grasp message and pick it up
     # parameters WIDTH and LENGTH need to be tuned according to the object and grasping pose
-    WIDTH = 0.04
-    VLENGTH = 0.111
-    LENGTH = 0.104
+    
     # print(boxPose.pose.position)
-    grasp = pp.generate_grasp(object_name, "horizontal", boxPose.pose.position, WIDTH,pitch=30, length=LENGTH)
-
-    print(grasp)
-
-    pp.pickup(object_name, [grasp])
-    pp.clean_scene(object_name)
+    
 
 
     # choose target position and place the object
@@ -63,10 +55,29 @@ if __name__ == '__main__':
     # Inverse K Test
     # pose = pp.pose2msg(0,0,0,0.373586,0,0.009648)
     # print(grasp.grasp_pose.pose)
-    pp.move_pose_arm(grasp.grasp_pose.pose)
-    rospy.sleep(1)
-    pp.move_joint_hand(0)
+
+
+    object_name = "box1"
+    boxPose = pp.get_object_p(object_name)
+    pp.scene.add_box(object_name, boxPose,(0.01,0.01,0.01))
+    WIDTH = 0.04
+    VLENGTH = 0.112
+    LENGTH = 0.104
+    grasp = pp.generate_grasp(object_name, "vertical", boxPose.pose.position, WIDTH, length=VLENGTH)
+    print(grasp)
+    rospy.sleep(5)
+    pp.pickup(object_name, [grasp])
+    # pp.clean_scene(object_name)
     
-    pp.back_to_home()
-    rospy.sleep(1)
-    pp.move_joint_hand(0.03)
+    # target_name = "storage"
+    # place_position = pp.get_target_position(target_name)
+    # pp.place("vertical", place_position)
+
+
+    # pp.move_pose_arm(grasp.grasp_pose.pose)
+    # rospy.sleep(2)
+    # pp.move_joint_hand(0)
+    # rospy.sleep(2)
+    # pp.back_to_home()
+    # rospy.sleep(2)
+    # pp.move_joint_hand(0.03)

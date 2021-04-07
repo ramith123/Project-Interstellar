@@ -125,11 +125,12 @@ class Pick_Place:
         self.arm = moveit_commander.MoveGroupCommander("meca_arm")
         self.gripper = moveit_commander.MoveGroupCommander("hand")
 
-        self.arm.set_goal_tolerance(0.01)
+        self.arm.set_goal_tolerance(0.005)
+        self.arm.allow_replanning(True)
 
         # set default grasp message infos
-        self.set_grasp_distance(0.01, 0.01)
-        self.set_grasp_direction(0, 0, -0.01)
+        self.set_grasp_distance(0.03, 0.1)
+        self.set_grasp_direction(0, 0, -0.2)
 
         self.get_workspace()
 
@@ -162,9 +163,9 @@ class Pick_Place:
             # target_name = targets.keys()
         name="storage"
         position = Point()
-        position.x = 0.797330 - robot_x
-        position.y = -0.288180 - robot_y
-        position.z = 0.009313 - robot_z
+        position.x = 0 - robot_x
+        position.y = 0 - robot_y
+        position.z = 0 - robot_z
         self.goal_list[name] = position
 
     def set_gripper_width_relationship(self):
@@ -173,7 +174,7 @@ class Pick_Place:
         #     objects_info = yaml.load(file)
         #     gripper_joint_value = objects_info["gripper_joint_value"]
         # TODO: GRIPPER WIDTH FROM BOX WIDTH
-        self.gripper_width[1] = 0.04
+        self.gripper_width[0.01] = 0.04
 
     def get_object_list(self):
         return self.object_list.keys()
@@ -340,9 +341,11 @@ class Pick_Place:
         #     rospy.loginfo('***** GOAL POSE IS OUT OF ROBOT WORKSPACE *****')
         #     return
 
-        self.arm.set_pose_target(pose_goal)
-
+        
+        self.arm.plan(pose_goal)
+            
         self.arm.go(wait=True)
+
         self.arm.stop() # To guarantee no residual movement
         self.arm.clear_pose_targets()
         self.updatepose_trigger(True)
@@ -397,7 +400,7 @@ class Pick_Place:
         grasp = Grasp()
 
         grasp.grasp_pose.header.stamp = now
-        grasp.grasp_pose.header.frame_id = "world"
+        grasp.grasp_pose.header.frame_id = self.robot.get_planning_frame()
 
         grasp.grasp_pose.pose.position = position
 
@@ -419,30 +422,30 @@ class Pick_Place:
 
         # Setting pre-grasp approach
         grasp.pre_grasp_approach.direction.header.stamp = now
-        grasp.pre_grasp_approach.direction.header.frame_id = "world"
+        grasp.pre_grasp_approach.direction.header.frame_id = self.robot.get_planning_frame()
         grasp.pre_grasp_approach.direction.vector = self.approach_direction
         grasp.pre_grasp_approach.min_distance = self.approach_retreat_min_dist
         grasp.pre_grasp_approach.desired_distance = self.approach_retreat_desired_dist
 
         # Setting post-grasp retreat
         grasp.post_grasp_retreat.direction.header.stamp = now
-        grasp.post_grasp_retreat.direction.header.frame_id = "world"
+        grasp.post_grasp_retreat.direction.header.frame_id = self.robot.get_planning_frame()
         grasp.post_grasp_retreat.direction.vector = self.retreat_direction
         grasp.post_grasp_retreat.min_distance = self.approach_retreat_min_dist
         grasp.post_grasp_retreat.desired_distance = self.approach_retreat_desired_dist
 
-        grasp.max_contact_force = 10
+        grasp.max_contact_force = 1000
 
         grasp.pre_grasp_posture.joint_names.append("meca_finger_joint1")
         traj = JointTrajectoryPoint()
-        traj.positions.append(0.0)
+        traj.positions.append(0.04)
         traj.time_from_start = rospy.Duration.from_sec(0.5)
         grasp.pre_grasp_posture.points.append(traj)
 
         grasp.grasp_posture.joint_names.append("meca_finger_joint1")
         traj = JointTrajectoryPoint()
-        traj.positions.append(width)
-        traj.positions.append(width)
+        traj.positions.append(0)
+        # traj.positions.append(width)
 
         traj.time_from_start = rospy.Duration.from_sec(5.0)
         grasp.grasp_posture.points.append(traj)

@@ -127,7 +127,7 @@ class Pick_Place:
         self.gripper = moveit_commander.MoveGroupCommander("hand")
         self.arm.set_planner_id("RRTkConfigDefault")
 
-        self.arm.set_goal_tolerance(0.009)
+        self.arm.set_goal_tolerance(0.005)
         self.arm.allow_replanning(True)
 
         # set default grasp message infos

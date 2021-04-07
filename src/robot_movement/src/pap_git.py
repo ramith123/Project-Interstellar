@@ -130,7 +130,7 @@ class Pick_Place:
 
         # set default grasp message infos
         self.set_grasp_distance(0.03, 0.1)
-        self.set_grasp_direction(0, 0, -0.2)
+        self.set_grasp_direction(0, 0, -0.5)
 
         self.get_workspace()
 

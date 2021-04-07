@@ -60,7 +60,7 @@ if __name__ == '__main__':
     object_name = "box1"
     boxPose = pp.get_object_p(object_name)
     pp.scene.add_box(object_name, boxPose,(0.01,0.01,0.01))
-    WIDTH = 0.04
+    WIDTH = 0
     VLENGTH = 0.112
     LENGTH = 0.104
     grasp = pp.generate_grasp(object_name, "vertical", boxPose.pose.position, WIDTH, length=VLENGTH)
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     # pp.move_pose_arm(grasp.grasp_pose.pose)
     # rospy.sleep(2)
     # pp.move_joint_hand(0)
+    rospy.sleep(2)
+    pp.move_joint_hand(0.03)
+    pp.back_to_home()
     # rospy.sleep(2)
-    # pp.back_to_home()
-    # rospy.sleep(2)
-    # pp.move_joint_hand(0.03)

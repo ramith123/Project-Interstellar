@@ -123,7 +123,7 @@ class Pick_Place:
         self.arm = moveit_commander.MoveGroupCommander("meca_arm")
         self.gripper = moveit_commander.MoveGroupCommander("hand")
 
-        self.arm.set_goal_tolerance(0.01)
+        self.arm.set_goal_tolerance(0.08)
 
         # set default grasp message infos
         self.set_grasp_distance(0.1, 0.2)

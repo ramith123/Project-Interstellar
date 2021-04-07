@@ -38,10 +38,12 @@ if __name__ == '__main__':
     # generate grasp message and pick it up
     # parameters WIDTH and LENGTH need to be tuned according to the object and grasping pose
     WIDTH = 0.4
-    LENGTH = 0
+    LENGTH = 0.2
     print(boxPose.pose.position)
     grasp = pp.generate_grasp(object_name, "horizontal", boxPose.pose.position, WIDTH, length=LENGTH)
+
     print(grasp)
+
     pp.pickup(object_name, [grasp])
 
 

@@ -18,7 +18,7 @@ if __name__ == '__main__':
     moveit_commander.roscpp_initialize(sys.argv)
     rospy.init_node('simple_pick_place', anonymous=True)
     pp = Pick_Place()
-    # pp.back_to_home()
+    pp.back_to_home()
     pp.move_joint_hand(0.04)
     
     
@@ -39,13 +39,14 @@ if __name__ == '__main__':
     # generate grasp message and pick it up
     # parameters WIDTH and LENGTH need to be tuned according to the object and grasping pose
     WIDTH = 0.04
-    LENGTH = 0.2
+    VLENGTH = 0.111
+    LENGTH = 0.104
     # print(boxPose.pose.position)
-    grasp = pp.generate_grasp(object_name, "horizontal", boxPose.pose.position, WIDTH, length=LENGTH)
+    grasp = pp.generate_grasp(object_name, "horizontal", boxPose.pose.position, WIDTH,pitch=30, length=LENGTH)
 
-    # print(grasp)
+    print(grasp)
 
-    # pp.pickup(object_name, [grasp])
+    pp.pickup(object_name, [grasp])
     pp.clean_scene(object_name)
 
 
@@ -61,5 +62,11 @@ if __name__ == '__main__':
     # pp.move_joint_arm(radians(-55),radians(-69),radians(22),radians(-127),radians(-80),radians(145))
     # Inverse K Test
     # pose = pp.pose2msg(0,0,0,0.373586,0,0.009648)
-    print(grasp.grasp_pose.pose)
+    # print(grasp.grasp_pose.pose)
     pp.move_pose_arm(grasp.grasp_pose.pose)
+    rospy.sleep(1)
+    pp.move_joint_hand(0)
+    
+    pp.back_to_home()
+    rospy.sleep(1)
+    pp.move_joint_hand(0.03)

@@ -11,6 +11,8 @@ import geometry_msgs
 from pap_git import Pick_Place
 from math import radians
 from geometry_msgs.msg import Pose, PoseStamped
+VLENGTH = 0.112
+LENGTH = 0.104
 
 
 
@@ -56,22 +58,18 @@ if __name__ == '__main__':
     # pose = pp.pose2msg(0,0,0,0.373586,0,0.009648)
     # print(grasp.grasp_pose.pose)
 
+    def pickup_and_drop_seq(object_name,target_name,orientation_obj,orientation_tar):
+        boxPose = pp.get_object_p(object_name)
+        pp.scene.add_box(object_name, boxPose,(0.01,0.01,0.01))
+        
+        grasp = pp.generate_grasp(object_name, orientation, boxPose.pose.position,pitch=30, length=VLENGTH)
+        print(grasp)
+        rospy.sleep(5)
+        pp.pickup(object_name, [grasp])
+        pp.clean_scene(object_name)
+        place_position = pp.get_target_position(target_name)
+        pp.place(orientation_tar, place_position)
 
-    object_name = "box1"
-    boxPose = pp.get_object_p(object_name)
-    pp.scene.add_box(object_name, boxPose,(0.01,0.01,0.01))
-    
-    VLENGTH = 0.112
-    LENGTH = 0.104
-    grasp = pp.generate_grasp(object_name, "horizontal", boxPose.pose.position,pitch=30, length=VLENGTH)
-    print(grasp)
-    rospy.sleep(5)
-    pp.pickup(object_name, [grasp])
-    pp.clean_scene(object_name)
-    
-    target_name = "storage"
-    place_position = pp.get_target_position(target_name)
-    pp.place("vertical", place_position)
 
 
     # pp.move_pose_arm(grasp.grasp_pose.pose)

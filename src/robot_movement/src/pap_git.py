@@ -497,7 +497,7 @@ class Pick_Place:
         (plan, fraction) = self.arm.compute_cartesian_path(
                                         waypoints,   # waypoints to follow
                                         0.01,        # eef_step
-                                        0.0)         # jump_threshold
+                                        0)         # jump_threshold
         self.arm.execute(plan, wait=True)
         self.updatepose_trigger(True)
 
@@ -514,7 +514,7 @@ class Pick_Place:
         (plan, fraction) = self.arm.compute_cartesian_path(
                                         waypoints,   # waypoints to follow
                                         0.01,        # eef_step
-                                        0.0)         # jump_threshold
+                                        0)         # jump_threshold
         self.arm.execute(plan, wait=True)
         self.updatepose_trigger(True)
 

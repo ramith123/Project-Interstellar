@@ -72,7 +72,7 @@
         <parent link="meca_base_link" />
         <child link="meca_axis_1_link" />
         <axis xyz="0 0 1" />
-        <limit effort="10.0" lower="-3" upper="3" velocity="2" />
+        <limit effort="10.0" lower="-3.05433" upper="3.05433" velocity="2.61799" />
     </joint>
     <!-- Joint 2 -->
     <link name="meca_axis_2_link">

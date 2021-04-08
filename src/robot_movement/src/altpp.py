@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+os.environ["ROS_NAMESPACE"] = "/robot1"
 import sys
 import copy
 import rospy
@@ -51,6 +52,7 @@ if __name__ == '__main__':
     
     pp = Pick_Place()
     pickup_and_drop_seq("box2","box2Target","horizontal","vertical")
-    # pp.back_to_home()
+    pp.back_to_home()
+    
     
     # rospy.sleep(2)

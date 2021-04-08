@@ -32,8 +32,6 @@ class Object:
         self.height = height
         self.width = width
         self.length = length
-        self.shape = shape
-        self.color = color
         self.p = p
 
 
@@ -79,8 +77,7 @@ class Pick_Place:
         # objects_name = objects.keys()
         
         name = "box1"
-        shape = "box"
-        color = "green"
+        
 
         #TODO: GET CUBE POSITION
         cx,cy,cz,croll,cpitch,cyaw = self.get_cube_location()
@@ -113,7 +110,7 @@ class Pick_Place:
         height = z
         width = y
         length = x
-        self.object_list[name] = Object(p.pose, object_pose, height, width, length, shape, color,p)
+        self.object_list[name] = Object(p.pose, object_pose, height, width, length,p)
 
         
         # self.object_list = object_list
@@ -125,14 +122,14 @@ class Pick_Place:
 
         self.arm = moveit_commander.MoveGroupCommander("meca_arm")
         self.gripper = moveit_commander.MoveGroupCommander("hand")
-        self.arm.set_planner_id("RRTkConfigDefault")
-
-        self.arm.set_goal_tolerance(0.01)
+        # self.arm.set_planner_id("RRTkConfigDefault")
+        self.arm.allow_looking(True)
         self.arm.allow_replanning(True)
+        self.arm.set_goal_tolerance(0.01)
 
         # set default grasp message infos
         self.set_grasp_distance(0.03, 0.1)
-        self.set_grasp_direction(0, 0, -0.3)
+        self.set_grasp_direction(0, 0, -0.8)
 
         self.get_workspace()
 
@@ -195,9 +192,7 @@ class Pick_Place:
         height = this_object.height
         width = this_object.width
         length = this_object.length
-        shape = this_object.shape
-        color = this_object.color
-        return pose, height, width, length, shape, color
+        return pose, height, width, length
 
     def get_target_position(self, target_name):
         return self.goal_list[target_name]

@@ -23,7 +23,9 @@ from tf.transformations import euler_from_quaternion, quaternion_from_euler, eul
 from geometry_msgs.msg import Pose, PoseStamped, PoseArray, Quaternion, Vector3, Point
 import threading
 import yaml
-
+FULLY_OPEN = 0.02
+FULLY_CLOSED = 0.01
+TOL_LEVEL = 0.02
 
 class Object:
     def __init__(self, relative_pose, abs_pose, height, width, length,p):
@@ -76,11 +78,44 @@ class Pick_Place:
         # objects = objects_info["objects"]
         # objects_name = objects.keys()
         
-        name = "box1"
+        
         
 
-        #TODO: GET CUBE POSITION
-        cx,cy,cz,croll,cpitch,cyaw = self.get_cube_location()
+        
+
+        
+        # self.object_list = object_list
+        self.goal_list = {}
+        self.get_cube_locations()
+        self.set_target_info()
+
+        self.gripper_width = {}
+        self.set_gripper_width_relationship()
+
+        self.arm = moveit_commander.MoveGroupCommander("meca_arm")
+        self.gripper = moveit_commander.MoveGroupCommander("hand")
+        self.arm.set_planner_id("RRTkConfigDefault")
+        # self.arm.allow_looking(True)
+        self.arm.allow_replanning(True)
+        self.arm.set_goal_tolerance(TOL_LEVEL)
+
+        # set default grasp message infos
+        self.set_grasp_distance(0.03, 0.1)
+        self.set_grasp_direction(0, 0, -0.6)
+
+        self.get_workspace()
+
+        self.message_pub = rospy.Publisher("/gui_message", String, queue_size=0)
+        self.updatepose_pub = rospy.Publisher("/updatepose", Bool, queue_size=0)
+
+    def set_objects(self,msg):
+        robot_x = 0
+        robot_y = 0
+        robot_z = 0
+        robot_roll = 0
+        robot_pitch = 0
+        robot_yaw = 0
+        name, cx,cy,cz,croll,cpitch,cyaw = self.clean_message(msg)
         x = cx
         y = cy
         z = cz
@@ -110,32 +145,7 @@ class Pick_Place:
         height = z
         width = y
         length = x
-        self.object_list[name] = Object(p.pose, object_pose, height, width, length,p)
-
-        
-        # self.object_list = object_list
-        self.goal_list = {}
-        self.set_target_info()
-
-        self.gripper_width = {}
-        self.set_gripper_width_relationship()
-
-        self.arm = moveit_commander.MoveGroupCommander("meca_arm")
-        self.gripper = moveit_commander.MoveGroupCommander("hand")
-        # self.arm.set_planner_id("RRTkConfigDefault")
-        self.arm.allow_looking(True)
-        self.arm.allow_replanning(True)
-        self.arm.set_goal_tolerance(0.01)
-
-        # set default grasp message infos
-        self.set_grasp_distance(0.03, 0.1)
-        self.set_grasp_direction(0, 0, -0.8)
-
-        self.get_workspace()
-
-        self.message_pub = rospy.Publisher("/gui_message", String, queue_size=0)
-        self.updatepose_pub = rospy.Publisher("/updatepose", Bool, queue_size=0)
-    
+        self.object_list[name] = Object(p.pose, object_pose, height, width, length,p)  
     def send_message(self, message):
         msg = String()
         msg.data = message
@@ -156,6 +166,7 @@ class Pick_Place:
         robot_z = 0
         filename = os.path.join(rospkg.RosPack().get_path('robot_movement'), 'src', 'targets.yaml')
         with open(filename) as file:
+
             objects_info = yaml.load(file)
             targets = objects_info["targets"]
             target_name = targets.keys()
@@ -164,7 +175,7 @@ class Pick_Place:
                 position.x = targets[name]["x"] - robot_x
                 position.y = targets[name]["y"] - robot_y
                 position.z = targets[name]["z"] - robot_z
-            self.goal_list[name] = position
+                self.goal_list[name] = position
 
     def set_gripper_width_relationship(self):
         # filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'interfaces', 'models_info.yaml')
@@ -313,7 +324,7 @@ class Pick_Place:
     def back_to_home(self):
         j1, j2, j3, j4, j5, j6, g = self.home_value
         self.move_joint_arm(j1, j2, j3, j4, j5, j6)
-        self.move_joint_hand(g)
+        self.move_joint_hand(FULLY_CLOSED)
         rospy.sleep(1)
 
     # Forward Kinematics (FK): move the arm by axis values
@@ -338,8 +349,7 @@ class Pick_Place:
         #     return
 
         
-        self.arm.plan(pose_goal)
-            
+        self.arm.set_pose_target(pose_goal)
         self.arm.go(wait=True)
 
         self.arm.stop() # To guarantee no residual movement
@@ -434,13 +444,13 @@ class Pick_Place:
 
         grasp.pre_grasp_posture.joint_names.append("meca_finger_joint1")
         traj = JointTrajectoryPoint()
-        traj.positions.append(0.04)
+        traj.positions.append(FULLY_OPEN)
         traj.time_from_start = rospy.Duration.from_sec(0.5)
         grasp.pre_grasp_posture.points.append(traj)
 
         grasp.grasp_posture.joint_names.append("meca_finger_joint1")
         traj = JointTrajectoryPoint()
-        traj.positions.append(0)
+        traj.positions.append(FULLY_CLOSED)
         # traj.positions.append(width)
 
         traj.time_from_start = rospy.Duration.from_sec(5.0)
@@ -460,7 +470,7 @@ class Pick_Place:
         self.clean_scene(object_name)
 
     # place object to goal position
-    def place(self, eef_orientation, position, distance = 0.05, roll = 0, pitch = 0, yaw = 180):
+    def place(self, eef_orientation, position, distance = 0.055, roll = 0, pitch = 0, yaw = 180):
         # if not self.is_inside_workspace(position.x, position.y, position.z):
         #     rospy.loginfo('***** GOAL POSE IS OUT OF ROBOT WORKSPACE *****')
         #     rospy.loginfo('Stop placing')
@@ -491,13 +501,13 @@ class Pick_Place:
 
         (plan, fraction) = self.arm.compute_cartesian_path(
                                         waypoints,   # waypoints to follow
-                                        0.005,        # eef_step
+                                        0.01,        # eef_step
                                         0)         # jump_threshold
         self.arm.execute(plan, wait=True)
         self.updatepose_trigger(True)
 
         # place
-        self.move_joint_hand(0.04)
+        self.move_joint_hand(FULLY_OPEN)
         rospy.sleep(1)
 
         # move up
@@ -508,7 +518,7 @@ class Pick_Place:
 
         (plan, fraction) = self.arm.compute_cartesian_path(
                                         waypoints,   # waypoints to follow
-                                        0.005,        # eef_step
+                                        0.01,        # eef_step
                                         0)         # jump_threshold
         self.arm.execute(plan, wait=True)
         self.updatepose_trigger(True)
@@ -518,6 +528,7 @@ class Pick_Place:
     def clean_message(self,message):
         unformated_positions = message.data.strip("\n")
         positions = unformated_positions.split(",")
+        name = positions[0]
         x = float(positions[1])
         y = float(positions[2])
         z = float(positions[3])
@@ -526,7 +537,15 @@ class Pick_Place:
         yaw = float(positions[6])
         w = float(positions[7])
         # print("I heard %f %f %f %f %f %f", x, y, z, roll, pitch, yaw, w)
-        return x,y,z,roll,pitch,yaw
-    def get_cube_location(self):
-        msg = rospy.wait_for_message("/locations", String)
-        return self.clean_message(msg)
+        return name,x,y,z,roll,pitch,yaw
+    
+    def get_cube_locations(self):
+        rospy.Subscriber("/locations", String, self.topicListner)
+        
+        
+    def topicListner(self,data):
+        msg = self.clean_message(data)
+        if not (self.object_list.has_key(msg[0])):
+            self.set_objects(data)
+        return
+        

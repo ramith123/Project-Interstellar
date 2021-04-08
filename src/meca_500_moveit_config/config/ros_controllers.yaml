@@ -4,7 +4,7 @@ moveit_sim_hw_interface:
   joint_model_group_pose: home pose
 # Settings for ros_control_boilerplate control loop
 generic_hw_control_loop:
-  loop_hz: 300
+  loop_hz: 60
   cycle_time_error_threshold: 0.01
 # Settings for ros_control hardware interface
 hardware_interface:
@@ -54,33 +54,33 @@ arm_controller:
     - meca_axis_6_joint
   gains:
     meca_axis_1_joint:
-      p: 1000
-      d: 10
+      p: 2000
+      d: 4
       i: 1
 
     meca_axis_2_joint:
-      p: 1000
-      d: 10
+      p: 2000
+      d: 4
       i: 1
 
     meca_axis_3_joint:
-      p: 1000
-      d: 10
+      p: 2000
+      d: 4
       i: 1
 
     meca_axis_4_joint:
-      p: 1000
-      d: 10
+      p: 2000
+      d: 4
       i: 1
 
     meca_axis_5_joint:
-      p: 1000
-      d: 10
+      p: 2000
+      d: 4
       i: 1
 
     meca_axis_6_joint:
-      p: 1000
-      d: 10
+      p: 2000
+      d: 4
       i: 1
 
 hand_controller:
@@ -90,12 +90,12 @@ hand_controller:
 
   gains:
     meca_finger_joint1:
-      p: 300
-      d: 10
+      p: 200
+      d: 1
       i: 1
       i_clamp: 1
     meca_finger_joint2:
-      p: 300
-      d: 10
+      p: 200
+      d: 1
       i: 1
       i_clamp: 1

@@ -1,5 +1,4 @@
 import os
-os.environ["ROS_NAMESPACE"] = "/robot1"
 import rospy
 import rospkg
 

@@ -26,7 +26,7 @@ import yaml
 
 
 class Object:
-    def __init__(self, relative_pose, abs_pose, height, width, length, shape, color,p):
+    def __init__(self, relative_pose, abs_pose, height, width, length,p):
         self.relative_pose = relative_pose
         self.abs_pose = abs_pose
         self.height = height

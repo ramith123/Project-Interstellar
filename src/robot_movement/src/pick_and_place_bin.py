@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os
-os.environ["ROS_NAMESPACE"] = "/robot1"
+os.environ["ROS_NAMESPACE"] = "/robot2"
 import sys
 import rospy
 import moveit_commander
@@ -27,20 +27,20 @@ def mecademic_robot_basic_movement():
 
 
     # rotate the robot 179 degrees
-    meca_arm_group.move_via_joint_values([-3.12414])
+    # meca_arm_group.move_via_joint_values([-3.12414])
 
 
     #Cartesian path movement to pre grasp position
-    meca_arm_group.relative_cartesian_movement([-.1, -999, -.4])
+    meca_arm_group.relative_cartesian_movement([.029, -999, -.25])
 
-    # Close the mecademic robot fingers to pick cube up.
+    # Close the mecademic robot fingers to pick bin up.
     meca_fingers_group.move_via_joint_values([0.00, 0.00])
 
     # Lift the EEF upwards to ensure that the bin does not drag on the ground
-    meca_arm_group.relative_cartesian_movement([.1, -999, .4])
+    meca_arm_group.relative_cartesian_movement([.02, -999, .2])
 
     # Place the robot to its home position
-    meca_arm_group.move_to_home()
+    # meca_arm_group.relative_cartesian_movement([.1, -999, -.4])
 
     # Initiate topic to publish messages
     pub = rospy.Publisher('state_of_sequence1', String, queue_size=10)

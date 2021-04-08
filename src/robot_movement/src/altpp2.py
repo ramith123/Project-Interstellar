@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os
-os.environ["ROS_NAMESPACE"] = "/robot1"
+os.environ["ROS_NAMESPACE"] = "/robot2"
 import sys
 import copy
 import rospy
@@ -18,11 +18,9 @@ LENGTH = 0.104
 
 if __name__ == '__main__':
     moveit_commander.roscpp_initialize(sys.argv)
-    rospy.init_node('simple_pick_place', anonymous=True)
+    rospy.init_node('simple_pick_place2', anonymous=True)
     pp = Pick_Place()# print(pp.get_object_list())
     pp.back_to_home()
-    rospy.sleep(30)
-    pp = Pick_Place()
     # pp.move_joint_hand(0.04)
     # print(pp.get_target_list())
     
@@ -45,16 +43,6 @@ if __name__ == '__main__':
         pp.clean_scene(object_name)
         place_position = pp.get_target_position(target_name)
         pp.place(orientation_tar, place_position,yaw = -90)
-
-    rospy.sleep(2)
-    pickup_and_drop_seq("box1","box1Target","horizontal","vertical")
-    # pp.move_joint_hand(0)
-    rospy.sleep(2)
-    pp.back_to_home()
-    
-    pp = Pick_Place()
-    pickup_and_drop_seq("box2","box2Target","horizontal","vertical")
-    pp.back_to_home()
     
     
     # rospy.sleep(2)

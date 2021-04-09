@@ -4,7 +4,7 @@ moveit_sim_hw_interface:
   joint_model_group_pose: home pose
 # Settings for ros_control_boilerplate control loop
 generic_hw_control_loop:
-  loop_hz: 60
+  loop_hz: 300
   cycle_time_error_threshold: 0.01
 # Settings for ros_control hardware interface
 hardware_interface:
@@ -17,7 +17,7 @@ hardware_interface:
     - meca_axis_6_joint
     - meca_finger_joint1
 
-  sim_control_mode: 1 # 0: position, 1: velocity
+  sim_control_mode: 0 # 0: position, 1: velocity
 # Publish all joint states
 # Creates the /joint_states topic necessary in ROS
 
@@ -44,7 +44,7 @@ joint_state_controller:
   publish_rate: 50
 
 arm_controller:
-  type: effort_controllers/JointTrajectoryController
+  type: position_controllers/JointTrajectoryController
   joints:
     - meca_axis_1_joint
     - meca_axis_2_joint
@@ -54,34 +54,39 @@ arm_controller:
     - meca_axis_6_joint
   gains:
     meca_axis_1_joint:
-      p: 2000
-      d: 4
+      p: 100
+      d: 1
       i: 1
-
+      i_clamp: 1
     meca_axis_2_joint:
-      p: 2000
-      d: 4
+      p: 100
+      d: 1
       i: 1
+      i_clamp: 1
 
     meca_axis_3_joint:
-      p: 2000
-      d: 4
+      p: 100
+      d: 1
       i: 1
+      i_clamp: 1
 
     meca_axis_4_joint:
-      p: 2000
-      d: 4
+      p: 100
+      d: 1
       i: 1
+      i_clamp: 1
 
     meca_axis_5_joint:
-      p: 2000
-      d: 4
+      p: 100
+      d: 1
       i: 1
+      i_clamp: 1
 
     meca_axis_6_joint:
-      p: 2000
-      d: 4
+      p: 100
+      d: 1
       i: 1
+      i_clamp: 1
 
 hand_controller:
   type: effort_controllers/JointTrajectoryController
@@ -90,12 +95,12 @@ hand_controller:
 
   gains:
     meca_finger_joint1:
-      p: 200
-      d: 1
-      i: 1
+      p: 300
+      d: 2
+      i: 3
       i_clamp: 1
     meca_finger_joint2:
-      p: 200
-      d: 1
-      i: 1
+      p: 300
+      d: 2
+      i: 3
       i_clamp: 1

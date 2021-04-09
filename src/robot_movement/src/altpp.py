@@ -21,11 +21,13 @@ if __name__ == '__main__':
     rospy.init_node('simple_pick_place', anonymous=True)
     pp = Pick_Place()# print(pp.get_object_list())
     pp.back_to_home()
-    rospy.sleep(30)
+    # rospy.sleep(30)
     pp = Pick_Place()
-    # pp.move_joint_hand(0.04)
-    # print(pp.get_target_list())
     
+    
+    pp.add_target_from_Objects()
+    
+
     
     
     # # pp.move_pose_arm(grasp.grasp_pose.pose)
@@ -40,11 +42,18 @@ if __name__ == '__main__':
             grasp = pp.generate_grasp(object_name, orientation_obj, boxPose.pose.position, length=VLENGTH)
         else:
             return
-        # print(grasp)
+      
+        
         pp.pickup(object_name, [grasp])
         pp.clean_scene(object_name)
         place_position = pp.get_target_position(target_name)
-        pp.place(orientation_tar, place_position,yaw = -90)
+        # print(place_position)
+        if (orientation_tar == "horizontal"):
+            pp.place(orientation_tar, place_position,pitch = 30)
+        elif (orientation_tar == "vertical"):
+            pp.place(orientation_tar, place_position,yaw = -90)
+        else:
+            return
 
     rospy.sleep(2)
     pickup_and_drop_seq("box1","box1Target","horizontal","vertical")
@@ -55,6 +64,8 @@ if __name__ == '__main__':
     pp = Pick_Place()
     pickup_and_drop_seq("box2","box2Target","horizontal","vertical")
     pp.back_to_home()
-    
+    pickup_and_drop_seq("box1","box1Bin","vertical","horizontal")
+    pp.back_to_home()
+    pickup_and_drop_seq("box2","box2Bin","vertical","horizontal")
     
     # rospy.sleep(2)

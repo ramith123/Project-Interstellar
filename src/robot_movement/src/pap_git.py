@@ -23,9 +23,10 @@ from geometry_msgs.msg import Pose, PoseStamped, PoseArray, Quaternion, Vector3,
 import threading
 import yaml
 FULLY_OPEN = 0.02
-FULLY_CLOSED = 0.01
-TOL_LEVEL = 0.02
-
+FULLY_CLOSED = 0.004
+TOL_LEVEL = 0.012
+CONTACT_FORCE = 1000
+PLANNER = "RTTStar"
 class Object:
     def __init__(self, relative_pose, abs_pose, height, width, length,p):
         self.relative_pose = relative_pose
@@ -58,7 +59,7 @@ class Pick_Place:
         j4 = 0
         j5 = 0
         j6 = 0
-        g = 0
+        g = FULLY_CLOSED
         self.set_home_value([j1, j2, j3, j4, j5, j6, g])
 
         self.object_list = {}
@@ -93,9 +94,11 @@ class Pick_Place:
 
         self.arm = moveit_commander.MoveGroupCommander("meca_arm")
         self.gripper = moveit_commander.MoveGroupCommander("hand")
-        self.arm.set_planner_id("RRTkConfigDefault")
+        # self.arm.set_planner_id(PLANNER)
         # self.arm.allow_looking(True)
-        self.arm.allow_replanning(True)
+        
+        # self.arm.allow_replanning(True)
+        # self.gripper.allow_replanning(True)
         self.arm.set_goal_tolerance(TOL_LEVEL)
 
         # set default grasp message infos
@@ -175,7 +178,14 @@ class Pick_Place:
                 position.y = targets[name]["y"] - robot_y
                 position.z = targets[name]["z"] - robot_z
                 self.goal_list[name] = position
+    def add_target_from_Objects(self):
+        object_names = self.get_object_list()
+        print(object_names)
+        #FIXME: For some reason the new objects are not added
+        for name in object_names:
+            self.goal_list[name+"Bin"] = self.object_list[name].p.pose.position
 
+    
     def set_gripper_width_relationship(self):
         # filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_kinematics', 'interfaces', 'models_info.yaml')
         # with open(filename) as file:
@@ -439,7 +449,7 @@ class Pick_Place:
         grasp.post_grasp_retreat.min_distance = self.approach_retreat_min_dist
         grasp.post_grasp_retreat.desired_distance = self.approach_retreat_desired_dist
 
-        grasp.max_contact_force = 1000
+        grasp.max_contact_force = CONTACT_FORCE
 
         grasp.pre_grasp_posture.joint_names.append("meca_finger_joint1")
         traj = JointTrajectoryPoint()

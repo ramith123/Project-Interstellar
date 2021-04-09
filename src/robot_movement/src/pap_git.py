@@ -178,12 +178,7 @@ class Pick_Place:
                 position.y = targets[name]["y"] - robot_y
                 position.z = targets[name]["z"] - robot_z
                 self.goal_list[name] = position
-    def add_target_from_Objects(self):
-        object_names = self.get_object_list()
-        print(object_names)
-        #FIXME: For some reason the new objects are not added
-        for name in object_names:
-            self.goal_list[name+"Bin"] = self.object_list[name].p.pose.position
+
 
     
     def set_gripper_width_relationship(self):
@@ -489,6 +484,8 @@ class Pick_Place:
         pose.position = position
 
         if eef_orientation == "horizontal":
+            q = quaternion_from_euler(0.0, numpy.deg2rad(pitch), 0)
+        elif eef_orientation == "horizontalF":
             q = quaternion_from_euler(0.0, numpy.deg2rad(pitch), numpy.deg2rad(180))
         elif eef_orientation == "vertical":
             q = quaternion_from_euler(0.0, numpy.deg2rad(90.0), numpy.deg2rad(yaw))

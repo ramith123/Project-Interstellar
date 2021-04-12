@@ -25,7 +25,6 @@ def mecademic_robot_basic_movement():
     # Ensure that the robot fingers are opened to pick up cube
     meca_fingers_group.move_via_joint_values([0.040, 0.040])
 
-
     # rotate the robot 179 degrees
     # meca_arm_group.move_via_joint_values([-3.12414])
 

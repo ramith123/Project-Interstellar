@@ -24,9 +24,9 @@ import threading
 import yaml
 FULLY_OPEN = 0.02
 FULLY_CLOSED = 0.004
-TOL_LEVEL = 0.012
+TOL_LEVEL = 0.008
 CONTACT_FORCE = 1000
-PLANNER = "RTTStar"
+PLANNER = "RTTConnect"
 class Object:
     def __init__(self, relative_pose, abs_pose, height, width, length,p):
         self.relative_pose = relative_pose
@@ -100,6 +100,7 @@ class Pick_Place:
         # self.arm.allow_replanning(True)
         # self.gripper.allow_replanning(True)
         self.arm.set_goal_tolerance(TOL_LEVEL)
+        
 
         # set default grasp message infos
         self.set_grasp_distance(0.03, 0.1)
@@ -474,7 +475,7 @@ class Pick_Place:
         self.clean_scene(object_name)
 
     # place object to goal position
-    def place(self, eef_orientation, position, distance = 0.055, roll = 0, pitch = 0, yaw = 180):
+    def place(self, eef_orientation, position, distance = 0.056, roll = 0, pitch = 0, yaw = 180):
         # if not self.is_inside_workspace(position.x, position.y, position.z):
         #     rospy.loginfo('***** GOAL POSE IS OUT OF ROBOT WORKSPACE *****')
         #     rospy.loginfo('Stop placing')
@@ -484,9 +485,7 @@ class Pick_Place:
         pose.position = position
 
         if eef_orientation == "horizontal":
-            q = quaternion_from_euler(0.0, numpy.deg2rad(pitch), 0)
-        elif eef_orientation == "horizontalF":
-            q = quaternion_from_euler(0.0, numpy.deg2rad(pitch), numpy.deg2rad(180))
+            q = quaternion_from_euler(0.0, numpy.deg2rad(pitch), numpy.deg2rad(yaw))
         elif eef_orientation == "vertical":
             q = quaternion_from_euler(0.0, numpy.deg2rad(90.0), numpy.deg2rad(yaw))
         elif eef_orientation == "user_defined":

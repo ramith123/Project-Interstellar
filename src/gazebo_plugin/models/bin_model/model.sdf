@@ -4,7 +4,7 @@
     <link name="link">
       <inertial>
         <pose>0 0 0.06 0 0 0</pose>
-        <mass>0.390</mass>
+        <mass>0.01037500</mass>
         <inertia>
           <ixx>0.00055575</ixx>
           <ixy>0</ixy>
@@ -24,18 +24,10 @@
         <surface>
           <friction>
             <ode>
-              <mu>10000.0</mu>
-              <mu2>1000.0</mu2>
+              <mu>0.01</mu>
+              <mu2>0.01</mu2>
             </ode>
           </friction>
-          <contact>
-            <ode>
-              <kp>10000000.0</kp>
-              <kd>1.0</kd>
-              <min_depth>0.001</min_depth>
-              <max_vel>0.1</max_vel>
-            </ode>
-          </contact>
         </surface>
       </collision>
       <visual name="visual">

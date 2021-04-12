@@ -25,9 +25,10 @@ def pickup_and_drop_seq(object_name,target_name,orientation_obj,orientation_tar)
         else:
             return
       
-
         pp.pickup(object_name, [grasp])
+        
         pp.clean_scene(object_name)
+        publishSync(syncPub,True)
         place_position = pp.get_target_position(target_name)
         # print(place_position)
         if (orientation_tar == "horizontal"):
@@ -56,13 +57,12 @@ if __name__ == '__main__':
     pp = Pick_Place()
     pickup_and_drop_seq("box1","box1Target","horizontal","vertical")
     # pp.move_joint_hand(0)
-    publishSync(syncPub,True)
+    
     pp.back_to_home()
 
     rospy.wait_for_message("/robot1SyncBool",Bool)
     pp = Pick_Place()
     pickup_and_drop_seq("box2","box2Target","horizontal","vertical")
-    publishSync(syncPub,True)
     pp.back_to_home()
 
     

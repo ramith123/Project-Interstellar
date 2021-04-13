@@ -25,10 +25,10 @@ def pickup_and_drop_seq(object_name,target_name,orientation_obj,orientation_tar)
         else:
             return
       
-
         pp.pickup(object_name, [grasp])
         publishSync(syncPub,True)
         pp.clean_scene(object_name)
+        publishSync(syncPub,True)
         place_position = pp.get_target_position(target_name)
         # print(place_position)
         if (orientation_tar == "horizontal"):

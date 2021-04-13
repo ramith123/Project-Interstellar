@@ -24,9 +24,9 @@ import threading
 import yaml
 FULLY_OPEN = 0.02
 FULLY_CLOSED = 0.004
-TOL_LEVEL = 0.008
+TOL_LEVEL = 0.005
 CONTACT_FORCE = 1000
-PLANNER = "RTTConnect"
+PLANNER = "pRTT"
 class Object:
     def __init__(self, relative_pose, abs_pose, height, width, length,p):
         self.relative_pose = relative_pose

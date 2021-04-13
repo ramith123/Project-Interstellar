@@ -56,9 +56,9 @@ if __name__ == '__main__':
     currentPose.pose.position.z -=0.1
     cartesianMove(pp,currentPose)
     pp.move_joint_hand(0.03)
-    rospy.sleep(3)
     
-
+    
+    rospy.wait_for_message("/robot2SyncBool",Bool)
     pp.move_joint_hand(0.001)
     rospy.sleep(4)
     currentPose = pp.arm.get_current_pose()
@@ -66,7 +66,6 @@ if __name__ == '__main__':
     cartesianMove(pp,currentPose)
     publishSync(syncPub,True)
     rospy.wait_for_message("/robot2SyncBool",Bool)
-    rospy.sleep(2)
     currentPose = pp.arm.get_current_pose()
     currentPose.pose.position.z -=0.1
     cartesianMove(pp,currentPose)

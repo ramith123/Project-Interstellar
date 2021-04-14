@@ -24,9 +24,9 @@ import threading
 import yaml
 FULLY_OPEN = 0.02
 FULLY_CLOSED = 0.004
-TOL_LEVEL = 0.005
+TOL_LEVEL = 0.008
 CONTACT_FORCE = 1000
-PLANNER = "pRTT"
+PLANNER = "RTTConnect"
 class Object:
     def __init__(self, relative_pose, abs_pose, height, width, length,p):
         self.relative_pose = relative_pose
@@ -97,8 +97,8 @@ class Pick_Place:
         # self.arm.set_planner_id(PLANNER)
         # self.arm.allow_looking(True)
         
-        # self.arm.allow_replanning(True)
-        # self.gripper.allow_replanning(True)
+        self.arm.allow_replanning(True)
+        self.gripper.allow_replanning(True)
         self.arm.set_goal_tolerance(TOL_LEVEL)
         
 
@@ -129,7 +129,7 @@ class Pick_Place:
 
         p = PoseStamped()
 
-        p.header.frame_id = self.robot.get_planning_frame()
+        p.header.frame_id = "world"
         p.header.stamp = rospy.Time()
 
         p.pose.position.x = x - robot_x
@@ -368,8 +368,7 @@ class Pick_Place:
         # joint_goal[1] = gripper_finger1_joint # Gripper master axis
 
         self.gripper.go(joint_goal, wait=True)
-        self.gripper.stop() # To guarantee no residual movement
-        self.updatepose_trigger(True)
+         
 
     def set_grasp_direction(self, x, y, z):
         self.approach_direction = Vector3()
@@ -411,7 +410,7 @@ class Pick_Place:
         grasp = Grasp()
 
         grasp.grasp_pose.header.stamp = now
-        grasp.grasp_pose.header.frame_id = self.robot.get_planning_frame()
+        grasp.grasp_pose.header.frame_id = "world"
 
         grasp.grasp_pose.pose.position = position
 
@@ -433,14 +432,14 @@ class Pick_Place:
 
         # Setting pre-grasp approach
         grasp.pre_grasp_approach.direction.header.stamp = now
-        grasp.pre_grasp_approach.direction.header.frame_id = self.robot.get_planning_frame()
+        grasp.pre_grasp_approach.direction.header.frame_id = "world"
         grasp.pre_grasp_approach.direction.vector = self.approach_direction
         grasp.pre_grasp_approach.min_distance = self.approach_retreat_min_dist
         grasp.pre_grasp_approach.desired_distance = self.approach_retreat_desired_dist
 
         # Setting post-grasp retreat
         grasp.post_grasp_retreat.direction.header.stamp = now
-        grasp.post_grasp_retreat.direction.header.frame_id = self.robot.get_planning_frame()
+        grasp.post_grasp_retreat.direction.header.frame_id = "world"
         grasp.post_grasp_retreat.direction.vector = self.retreat_direction
         grasp.post_grasp_retreat.min_distance = self.approach_retreat_min_dist
         grasp.post_grasp_retreat.desired_distance = self.approach_retreat_desired_dist
@@ -509,11 +508,11 @@ class Pick_Place:
                                         0.01,        # eef_step
                                         0)         # jump_threshold
         self.arm.execute(plan, wait=True)
-        self.updatepose_trigger(True)
+        # self.updatepose_trigger(True)
 
         # place
         self.move_joint_hand(FULLY_OPEN)
-        rospy.sleep(1)
+        rospy.sleep(3)
 
         # move up
         waypoints = []
@@ -526,7 +525,7 @@ class Pick_Place:
                                         0.01,        # eef_step
                                         0)         # jump_threshold
         self.arm.execute(plan, wait=True)
-        self.updatepose_trigger(True)
+        # self.updatepose_trigger(True)
 
         rospy.loginfo('Place finished')
 

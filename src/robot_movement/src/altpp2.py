@@ -26,7 +26,7 @@ def cartesianMove(pp,pose):
 
     (pose, fraction) = pp.arm.compute_cartesian_path(
                                     waypoints,   # waypoints to follow
-                                    0.005,        # eef_step
+                                    0.008,        # eef_step
                                     0)         # jump_threshold
     
     pp.arm.execute(pose, wait=True)

@@ -21,10 +21,10 @@
         </inertial>
     </link> -->
     <link name="world" />
-    <joint name="world_joint" type="fixed">
+    <joint name="fixed" type="fixed">
         <parent link="world" />
         <child link="meca_base_link" />
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+        <!-- <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" /> -->
     </joint>
     <link name="meca_base_link">
         <visual>

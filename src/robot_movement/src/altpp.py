@@ -58,12 +58,13 @@ if __name__ == '__main__':
     pickup_and_drop_seq("box1","box1Target","horizontal","vertical")
     # pp.move_joint_hand(0)
     # publishSync(syncPub,True)
+    rospy.sleep(1)
     pp.back_to_home()
     publishSync(syncPub,True)
     rospy.wait_for_message("/robot1SyncBool",Bool)
     pp = Pick_Place()
     pickup_and_drop_seq("box2","box2Target","horizontal","vertical")
-    # publishSync(syncPub,True)
+    rospy.sleep(1)
     pp.back_to_home()
 
     
